@@ -19,8 +19,9 @@ interface Patient {
   Country: string
   State: string
   ZIPCode: string
- 
+  Time: string
 }
+
 export function SidebarNav() {
   const pathname = usePathname()
   const [patients, setPatients] = useState<Patient[]>([])
@@ -31,7 +32,7 @@ export function SidebarNav() {
       const { data, error } = await supabase
         .from("PatientData")
         .select("*")
-        .order("PatientName")
+        .order('Time', { ascending: true })
 
       if (error) {
         console.error("Error fetching patients:", error)
@@ -55,11 +56,35 @@ export function SidebarNav() {
     }
   }, [supabase])
 
+  // Helper function to format time
+  const formatTime = (timeString: string) => {
+    const date = new Date(timeString);
+    return date.toLocaleTimeString('en-US', { 
+      hour: 'numeric',
+      hour12: true 
+    });
+  }
+
+  // Group patients by hour
+  const groupPatientsByHour = (patients: Patient[]) => {
+    const groups: { [key: string]: Patient[] } = {};
+    
+    patients.forEach(patient => {
+      const hour = formatTime(patient.Time);
+      if (!groups[hour]) {
+        groups[hour] = [];
+      }
+      groups[hour].push(patient);
+    });
+
+    return groups;
+  }
+
   return (
     <nav className="w-64 bg-secondary p-4 overflow-hidden flex flex-col">
       <Link href="/" className="mb-6">
         <Image
-          src="/emtvisionlogo.png"  // Make sure to add your logo file to the public directory
+          src="/emtvisionlogo.png" 
           alt="Home"
           width={150}
           height={150}
@@ -69,21 +94,51 @@ export function SidebarNav() {
       <div className="font-bold mb-4">Patients</div>
       <ScrollArea className="flex-1 rounded-md transition-all duration-200">
         <div className="space-y-1">
-          {patients.map((patient) => (
-            <Button
-              key={patient.PatientID}
-              asChild
-              variant="ghost"
-              className={cn(
-                "w-full justify-start hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors",
-                pathname === `/dashboard/patient/${patient.PatientID}` && "bg-accent"
-              )}
-            >
-              <Link href={`/dashboard/patient/${patient.PatientID}`}>{patient.PatientName}</Link>
-            </Button>
+          {Object.entries(groupPatientsByHour(patients)).map(([hour, hourPatients]) => (
+            <div key={hour}>
+              <div className="px-2 py-1.5 text-sm font-semibold text-gray-500 border-t">
+                {hour}
+              </div>
+              {hourPatients.map((patient) => (
+                <Button
+                  key={patient.PatientID}
+                  asChild
+                  variant="ghost"
+                  className={cn(
+                    "w-full justify-start hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex-col items-start h-auto py-2",
+                    pathname === `/dashboard/patient/${patient.PatientID}` && "bg-accent"
+                  )}
+                >
+                  <Link href={`/dashboard/patient/${patient.PatientID}`}>
+                    <div className="font-medium">{patient.PatientName}</div>
+                    <div className="text-sm text-gray-500">ID: {patient.PatientID}</div>
+                  </Link>
+                </Button>
+              ))}
+            </div>
           ))}
         </div>
       </ScrollArea>
+      
+      {/* Profile section */}
+      <div className="mt-auto pt-4 border-t">
+        <Link href="/profile" className="flex items-center space-x-3 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg p-2 transition-colors">
+          <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-5 h-5"
+            >
+              <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div>
+            <div className="font-medium">Dr. John Smith</div>
+            <div className="text-sm text-gray-500">MD, FACS</div>
+          </div>
+        </Link>
+      </div>
     </nav>
   )
 }
