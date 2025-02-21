@@ -32,7 +32,7 @@ export function SidebarNav() {
       const { data, error } = await supabase
         .from("PatientData")
         .select("*")
-        .order('Time', { ascending: true })
+        .order('Time', { ascending: false })
 
       if (error) {
         console.error("Error fetching patients:", error)
