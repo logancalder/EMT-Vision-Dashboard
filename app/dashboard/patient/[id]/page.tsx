@@ -119,7 +119,7 @@ interface Patient {
 
 export default function PatientPage() {
   const params = useParams()
-  const [patient, setPatient] = useState<PatientData | null>(null)
+  const [patient, setPatient] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -178,149 +178,139 @@ export default function PatientPage() {
   if (!patient) {
     return <div>Patient not found</div>
   }
-
   return (
-    <div className="space-y-6 p-4">
-      <h2 className="text-3xl font-bold">Patient Information</h2>
+    <div className="p-4">
+      <h2 className="text-3xl font-bold mb-6">Patient Information</h2>
       
-      {/* Personal Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Personal Information</CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-2 gap-4">
-          <p><span className="font-semibold">Name:</span> {patient.PatientName}</p>
-          <p><span className="font-semibold">Age:</span> {patient.Age}</p>
-          <p><span className="font-semibold">Gender:</span> {patient.Gender}</p>
-          <p><span className="font-semibold">Race:</span> {patient.Race}</p>
-          <p><span className="font-semibold">Weight:</span> {patient.WeightKg} kg</p>
-          <div className="col-span-2">
-            <p><span className="font-semibold">Address:</span> {patient.HomeAddress}</p>
-            <p>{patient.City}, {patient.State} {patient.ZIPCode}</p>
-            <p><span className="font-semibold">County:</span> {patient.County}</p>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-2 gap-6">
+        {/* Left Column */}
+        <div className="space-y-6">
+          {/* Personal Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Personal Information</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-4">
+              <p><span className="font-semibold">Name:</span> {patient.PatientName}</p>
+              <p><span className="font-semibold">Age:</span> {patient.Age}</p>
+              <p><span className="font-semibold">Gender:</span> {patient.Gender}</p>
+              <p><span className="font-semibold">Race:</span> {patient.Race}</p>
+              <p><span className="font-semibold">Weight:</span> {patient.WeightKg} kg</p>
+              <div className="col-span-2">
+                <p><span className="font-semibold">Address:</span> {patient.HomeAddress}</p>
+                <p>{patient.City}, {patient.State} {patient.ZIPCode}</p>
+                <p><span className="font-semibold">County:</span> {patient.County}</p>
+              </div>
+            </CardContent>
+          </Card>
 
-      {/* Incident Details */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Incident Information</CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-2 gap-4">
-          <p><span className="font-semibold">Incident Number:</span> {patient.IncidentNumber}</p>
-          <p><span className="font-semibold">Service Requested:</span> {patient.ServiceRequested}</p>
-          <p><span className="font-semibold">Primary Role:</span> {patient.PrimaryRole}</p>
-          <p><span className="font-semibold">Response Mode:</span> {patient.ResponseMode}</p>
-          <p><span className="font-semibold">EMS Shift:</span> {patient.EMSShift}</p>
-          <p><span className="font-semibold">Scene Type:</span> {patient.SceneType}</p>
-          <p><span className="font-semibold">Category:</span> {patient.Category}</p>
-          <p><span className="font-semibold">Back In Service:</span> {patient.BackInService}</p>
-        </CardContent>
-      </Card>
+          {/* Vital Signs */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Vital Signs</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-4">
+              <p><span className="font-semibold">Heart Rate:</span> {patient.HeartRate}</p>
+              <p><span className="font-semibold">Blood Pressure:</span> {patient.BloodPressure}</p>
+              <p><span className="font-semibold">Respiratory Rate:</span> {patient.RespiratoryRate}</p>
+              <p><span className="font-semibold">SPO2:</span> {patient.SPO2}</p>
+              <p><span className="font-semibold">Temperature:</span> {patient.Temperature}</p>
+              <p><span className="font-semibold">Glucose:</span> {patient.Glucose}</p>
+            </CardContent>
+          </Card>
 
-      {/* Vital Signs */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Vital Signs</CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-2 gap-4">
-          <p><span className="font-semibold">Heart Rate:</span> {patient.HeartRate}</p>
-          <p><span className="font-semibold">Blood Pressure:</span> {patient.BloodPressure}</p>
-          <p><span className="font-semibold">Respiratory Rate:</span> {patient.RespiratoryRate}</p>
-          <p><span className="font-semibold">SPO2:</span> {patient.SPO2}</p>
-          <p><span className="font-semibold">Temperature:</span> {patient.Temperature}</p>
-          <p><span className="font-semibold">Glucose:</span> {patient.Glucose}</p>
-        </CardContent>
-      </Card>
+          {/* Medical History */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Medical History</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p><span className="font-semibold">Past Medical History:</span> {patient.PastMedicalHistory}</p>
+              <p><span className="font-semibold">Current Medications:</span> {patient.CurrentMedications}</p>
+              <p><span className="font-semibold">Medication Allergies:</span> {patient.MedicationAllergies}</p>
+              <p><span className="font-semibold">Advance Directives:</span> {patient.AdvanceDirectives}</p>
+            </CardContent>
+          </Card>
+        </div>
 
-      {/* Medical Assessment */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Medical Assessment</CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-2 gap-4">
-          <div className="col-span-2">
-            <h3 className="font-semibold mb-2">Glasgow Coma Scale</h3>
-            <div className="grid grid-cols-2 gap-4 ml-4">
-              <p><span className="font-semibold">Eye:</span> {patient.GCS_Eye}</p>
-              <p><span className="font-semibold">Verbal:</span> {patient.GCS_Verbal}</p>
-              <p><span className="font-semibold">Motor:</span> {patient.GCS_Motor}</p>
-              <p><span className="font-semibold">Total Score:</span> {patient.GCS_Score}</p>
-              <p><span className="font-semibold">Qualifier:</span> {patient.GCS_Qualifier}</p>
-            </div>
-          </div>
-          <div className="col-span-2 mt-4">
-            <h3 className="font-semibold mb-2">Physical Examination</h3>
-            <div className="grid grid-cols-2 gap-4 ml-4">
-              <p><span className="font-semibold">Mental Status:</span> {patient.MentalStatus}</p>
-              <p><span className="font-semibold">Abdomen:</span> {patient.AbdomenExam}</p>
-              <p><span className="font-semibold">Chest:</span> {patient.ChestExam}</p>
-              <p><span className="font-semibold">Back/Spine:</span> {patient.BackSpineExam}</p>
-              <p><span className="font-semibold">Skin:</span> {patient.SkinAssessment}</p>
-              <p><span className="font-semibold">Lungs:</span> {patient.LungExam}</p>
-              <p><span className="font-semibold">Extremities:</span> {patient.ExtremitiesExam}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+        {/* Right Column */}
+        <div className="space-y-6">
+          {/* Medical Assessment */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Medical Assessment</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h3 className="font-semibold mb-2">Glasgow Coma Scale</h3>
+                <div className="grid grid-cols-2 gap-4 ml-4">
+                  <p><span className="font-semibold">Eye:</span> {patient.GCS_Eye}</p>
+                  <p><span className="font-semibold">Verbal:</span> {patient.GCS_Verbal}</p>
+                  <p><span className="font-semibold">Motor:</span> {patient.GCS_Motor}</p>
+                  <p><span className="font-semibold">Total Score:</span> {patient.GCS_Score}</p>
+                  <p><span className="font-semibold">Qualifier:</span> {patient.GCS_Qualifier}</p>
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">Physical Examination</h3>
+                <div className="grid grid-cols-2 gap-4 ml-4">
+                  <p><span className="font-semibold">Mental Status:</span> {patient.MentalStatus}</p>
+                  <p><span className="font-semibold">Abdomen:</span> {patient.AbdomenExam}</p>
+                  <p><span className="font-semibold">Chest:</span> {patient.ChestExam}</p>
+                  <p><span className="font-semibold">Back/Spine:</span> {patient.BackSpineExam}</p>
+                  <p><span className="font-semibold">Skin:</span> {patient.SkinAssessment}</p>
+                  <p><span className="font-semibold">Lungs:</span> {patient.LungExam}</p>
+                  <p><span className="font-semibold">Extremities:</span> {patient.ExtremitiesExam}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-      {/* Medical History */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Medical History</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p><span className="font-semibold">Past Medical History:</span> {patient.PastMedicalHistory}</p>
-          <p><span className="font-semibold">Current Medications:</span> {patient.CurrentMedications}</p>
-          <p><span className="font-semibold">Medication Allergies:</span> {patient.MedicationAllergies}</p>
-          <p><span className="font-semibold">Advance Directives:</span> {patient.AdvanceDirectives}</p>
-        </CardContent>
-      </Card>
+          {/* Treatment & Disposition Combined */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Treatment & Disposition</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h3 className="font-semibold mb-2">Medication & Procedures</h3>
+                <div className="grid grid-cols-2 gap-4 ml-4">
+                  <p><span className="font-semibold">Medication:</span> {patient.Medication}</p>
+                  <p><span className="font-semibold">Dosage:</span> {patient.Dosage} {patient.MedUnits}</p>
+                  <p><span className="font-semibold">Procedure:</span> {patient.Procedure}</p>
+                  <p><span className="font-semibold">Location:</span> {patient.ProcLocation}</p>
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">Disposition</h3>
+                <div className="grid grid-cols-2 gap-4 ml-4">
+                  <p><span className="font-semibold">Transport:</span> {patient.TransportDisposition}</p>
+                  <p><span className="font-semibold">Level of Care:</span> {patient.LevelOfCareProvided}</p>
+                  <p><span className="font-semibold">Final Acuity:</span> {patient.FinalPatientAcuity}</p>
+                  <p><span className="font-semibold">Provider:</span> {patient.EMSPrimaryCareProvider}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-      {/* Treatment */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Treatment Information</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <h3 className="font-semibold mb-2">Medication Given</h3>
-            <div className="grid grid-cols-2 gap-4 ml-4">
-              <p><span className="font-semibold">Time:</span> {patient.MedTime}</p>
-              <p><span className="font-semibold">Medication:</span> {patient.Medication}</p>
-              <p><span className="font-semibold">Dosage:</span> {patient.Dosage} {patient.MedUnits}</p>
-              <p><span className="font-semibold">Route:</span> {patient.Route}</p>
-              <p><span className="font-semibold">Response:</span> {patient.MedResponse}</p>
-            </div>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-2">Procedures</h3>
-            <div className="grid grid-cols-2 gap-4 ml-4">
-              <p><span className="font-semibold">Time:</span> {patient.ProcTime}</p>
-              <p><span className="font-semibold">Procedure:</span> {patient.Procedure}</p>
-              <p><span className="font-semibold">Location:</span> {patient.ProcLocation}</p>
-              <p><span className="font-semibold">Response:</span> {patient.ProcResponse}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Disposition */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Disposition</CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-2 gap-4">
-          <p><span className="font-semibold">Crew Disposition:</span> {patient.CrewDisposition}</p>
-          <p><span className="font-semibold">Transport Disposition:</span> {patient.TransportDisposition}</p>
-          <p><span className="font-semibold">Level of Care:</span> {patient.LevelOfCareProvided}</p>
-          <p><span className="font-semibold">Final Acuity:</span> {patient.FinalPatientAcuity}</p>
-          <p><span className="font-semibold">Transport Agency:</span> {patient.TransportAgency}</p>
-          <p><span className="font-semibold">Transport Unit:</span> {patient.TransportUnit}</p>
-          <p><span className="font-semibold">Primary Care Provider:</span> {patient.EMSPrimaryCareProvider}</p>
-        </CardContent>
-      </Card>
+          {/* Incident Details */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Incident Information</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-4">
+              <p><span className="font-semibold">Incident Number:</span> {patient.IncidentNumber}</p>
+              <p><span className="font-semibold">Service Requested:</span> {patient.ServiceRequested}</p>
+              <p><span className="font-semibold">Primary Role:</span> {patient.PrimaryRole}</p>
+              <p><span className="font-semibold">Response Mode:</span> {patient.ResponseMode}</p>
+              <p><span className="font-semibold">EMS Shift:</span> {patient.EMSShift}</p>
+              <p><span className="font-semibold">Scene Type:</span> {patient.SceneType}</p>
+              <p><span className="font-semibold">Category:</span> {patient.Category}</p>
+              <p><span className="font-semibold">Back In Service:</span> {patient.BackInService}</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   )
 }

@@ -67,7 +67,7 @@ export function SidebarNav() {
         />
       </Link>
       <div className="font-bold mb-4">Patients</div>
-      <ScrollArea className="flex-1 hover:bg-gray-100 dark:hover:bg-secondary/90 rounded-md transition-all duration-200">
+      <ScrollArea className="flex-1 rounded-md transition-all duration-200">
         <div className="space-y-1">
           {patients.map((patient) => (
             <Button
@@ -75,7 +75,7 @@ export function SidebarNav() {
               asChild
               variant="ghost"
               className={cn(
-                "w-full justify-start hover:bg-accent/50 transition-colors",
+                "w-full justify-start hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors",
                 pathname === `/dashboard/patient/${patient.PatientID}` && "bg-accent"
               )}
             >
