@@ -25,36 +25,32 @@ interface Patient {
 export function SidebarNav() {
   const pathname = usePathname()
   const [patients, setPatients] = useState<Patient[]>([])
-  const supabase = createClient()
 
   useEffect(() => {
     const fetchPatients = async () => {
-      const { data, error } = await supabase
-        .from("PatientData")
-        .select("*")
-        .order('Time', { ascending: false })
-
-      if (error) {
-        console.error("Error fetching patients:", error)
-      } else if (!data) {
-        console.error("No data received")
-      } else {
-        console.log("Received data:", data)
+      try {
+        const response = await fetch('/api/patients')
+        const data = await response.json()
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to fetch patients')
+        }
+        
         setPatients(data)
+      } catch (error) {
+        console.error("Error fetching patients:", error)
       }
     }
 
     fetchPatients()
 
-    const channel = supabase
-      .channel("patients_channel")
-      .on("postgres_changes", { event: "*", schema: "public", table: "patients" }, fetchPatients)
-      .subscribe()
+    // Set up polling instead of real-time subscription
+    const pollInterval = setInterval(fetchPatients, 5000) // Poll every 5 seconds
 
     return () => {
-      supabase.removeChannel(channel)
+      clearInterval(pollInterval)
     }
-  }, [supabase])
+  }, [])
 
   // Helper function to format time
   const formatTime = (timeString: string) => {

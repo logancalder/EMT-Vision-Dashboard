@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { createClient } from "@/utils/supabase/client"
 
 // ... existing code ...
 interface Patient {
@@ -119,34 +118,22 @@ interface Patient {
 
 export default function PatientPage() {
   const params = useParams()
-  const [patient, setPatient] = useState<any | null>(null)
+  const [patient, setPatient] = useState<Patient | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     async function fetchPatient() {
       try {
-        const supabase = createClient();
-        const { data, error } = await supabase
-          .from("PatientData")
-          .select("*")
-          .eq("PatientID", params.id)
-          .single();
+        const response = await fetch(`/api/patient?id=${params.id}`);
+        const data = await response.json();
     
-        console.log("Fetched data:", data);
-        console.log("Error:", error);
-    
-        if (error) {
-          setError(error.message);
-          return;
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to fetch patients')
         }
     
-        if (!data) {
-          setError("Patient not found.");
-          return;
-        }
-    
-        setPatient(data);
+        setPatient(data.length > 0 ? data[0] : null);
+
       } catch (err) {
         console.error("Caught error:", err);
         setError(err instanceof Error ? err.message : "An unexpected error occurred");
