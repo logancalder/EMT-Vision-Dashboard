@@ -107,7 +107,7 @@ export function SidebarNav() {
                 >
                   <Link href={`/dashboard/patient/${patient.PatientID}`}>
                     <div className="font-medium">{patient.PatientName}</div>
-                    <div className="text-sm text-gray-500">ID: {patient.PatientID}</div>
+                    <div className="text-xs text-gray-500 truncate">ID: {patient.PatientID}</div>
                   </Link>
                 </Button>
               ))}
