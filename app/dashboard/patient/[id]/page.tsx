@@ -185,7 +185,9 @@ export default function PatientPage() {
               <p><span className="font-semibold">Weight:</span> {patient.WeightKg} kg</p>
               <div className="col-span-2">
                 <p><span className="font-semibold">Address:</span> {patient.HomeAddress}</p>
-                <p>{patient.City}, {patient.State} {patient.ZIPCode}</p>
+                {patient.City && patient.State && patient.ZIPCode && (
+                  <p>{patient.City}, {patient.State} {patient.ZIPCode}</p>
+                )}
                 <p><span className="font-semibold">County:</span> {patient.County}</p>
               </div>
             </CardContent>
@@ -214,7 +216,7 @@ export default function PatientPage() {
             <CardContent className="space-y-4">
               <p><span className="font-semibold">Past Medical History:</span> {patient.PastMedicalHistory}</p>
               <p><span className="font-semibold">Current Medications:</span> {patient.CurrentMedications}</p>
-              <p><span className="font-semibold">Medication Allergies:</span> {patient.MedicationAllergies}</p>
+              <p><span className="font-semibold">Allergies:</span> {patient.MedicationAllergies}</p>
               <p><span className="font-semibold">Advance Directives:</span> {patient.AdvanceDirectives}</p>
             </CardContent>
           </Card>
