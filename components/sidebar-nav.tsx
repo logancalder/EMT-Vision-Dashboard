@@ -77,9 +77,31 @@ export function SidebarNav() {
     })
   }
 
+<<<<<<< HEAD
   // Group patients by hour
   const groupPatientsByHour = (patients: Patient[]) => {
     const groups: { [key: string]: Patient[] } = {}
+=======
+  // Group patients by date and hour
+  const groupPatientsByDateAndHour = (patients: Patient[]) => {
+    const groups: { [key: string]: { [key: string]: Patient[] } } = {};
+    
+    patients.forEach(patient => {
+      const date = new Date(patient.Time);
+      const day = date.toLocaleDateString('en-US', { weekday: 'short' });
+      const dateString = date.toLocaleDateString('en-US'); // Get the date string
+      const hour = formatTime(patient.Time);
+      const dateKey = `${day}, ${dateString}`; // Combine abbreviated day and date
+
+      if (!groups[dateKey]) {
+        groups[dateKey] = {};
+      }
+      if (!groups[dateKey][hour]) {
+        groups[dateKey][hour] = [];
+      }
+      groups[dateKey][hour].push(patient);
+    });
+>>>>>>> 9323d6a1f59191b9d3d5682b82780286bed30233
 
     patients.forEach((patient) => {
       const hour = formatTime(patient.Time || new Date().toISOString())
@@ -109,6 +131,7 @@ export function SidebarNav() {
       {/* Navigation */}
       <div className="px-3 py-2">
         <div className="space-y-1">
+<<<<<<< HEAD
           <Button variant={pathname === "/dashboard" ? "secondary" : "ghost"} className="w-full justify-start" asChild>
             <Link href="/dashboard">
               <Home className="mr-2 h-4 w-4" />
@@ -181,6 +204,33 @@ export function SidebarNav() {
                     </div>
                   </Link>
                 </Button>
+=======
+          {Object.entries(groupPatientsByDateAndHour(patients)).map(([dateKey, hours]) => (
+            <div key={dateKey}>
+              <div className="font-bold text-lg">{dateKey}</div>
+              {Object.entries(hours).map(([hour, hourPatients]) => (
+                <div key={hour}>
+                  <div className="px-2 py-1.5 text-sm font-semibold text-gray-500 border-t">
+                    {hour}
+                  </div>
+                  {hourPatients.map((patient) => (
+                    <Button
+                      key={patient.PatientID}
+                      asChild
+                      variant="ghost"
+                      className={cn(
+                        "w-full justify-start hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex-col items-start h-auto py-2",
+                        pathname === `/dashboard/patient/${patient.PatientID}` && "bg-accent"
+                      )}
+                    >
+                      <Link href={`/dashboard/patient/${patient.PatientID}`}>
+                        <div className="font-medium">{patient.PatientName}</div>
+                        <div className="text-xs text-gray-500 truncate">ID: {patient.PatientID}</div>
+                      </Link>
+                    </Button>
+                  ))}
+                </div>
+>>>>>>> 9323d6a1f59191b9d3d5682b82780286bed30233
               ))}
             </div>
           ))}

@@ -13,16 +13,16 @@ export default function DashboardLayout({
     <div className="flex h-screen bg-background">
       <SidebarNav />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="flex justify-between items-center p-4 bg-secondary">
-          <h1 className="text-2xl font-bold">Patient Dashboard v02d23y25</h1>
-          <div className="flex items-center space-x-2">
+        <header className="flex justify-between items-center p-6 bg-secondary shadow-md">
+          <h1 className="text-3xl font-bold text-primary">Patient Dashboard v02d26y25</h1>
+          <div className="flex items-center space-x-4">
             <ModeToggle />
             <Link href="/login">
-              <Button variant="outline">Logout</Button>
+              <Button variant="outline" className="hover:bg-gray-200">Logout</Button>
             </Link>
           </div>
         </header>
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-auto p-8">{children}</main>
       </div>
     </div>
   )
