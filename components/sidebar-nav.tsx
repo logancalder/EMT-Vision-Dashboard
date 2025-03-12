@@ -38,6 +38,29 @@ function getAcuityBadgeVariant(acuity: string | undefined): "default" | "seconda
   return "default"
 }
 
+// Helper function to format lists and capitalize
+function formatList(list: string | null | undefined): string {
+  if (!list) return "";
+  
+  try {
+    // Check if it's a JSON array
+    const parsed = JSON.parse(list);
+    if (Array.isArray(parsed)) {
+      return parsed
+        .map(item => typeof item === 'string' ? item.charAt(0).toUpperCase() + item.slice(1).toLowerCase() : item)
+        .join(', ');
+    }
+  } catch (e) {
+    // Not a JSON array, treat as string
+  }
+  
+  // If it's a comma-separated string
+  return list
+    .split(',')
+    .map(item => item.trim().charAt(0).toUpperCase() + item.trim().slice(1).toLowerCase())
+    .join(', ');
+}
+
 export function SidebarNav() {
   const pathname = usePathname()
   const [patients, setPatients] = useState<Patient[]>([])
@@ -212,19 +235,12 @@ export function SidebarNav() {
 
       <ScrollArea className="flex-1">
         <div className="px-3 space-y-1">
-          {Object.entries(groupPatientsByDateAndHour(patients)).map(([date, hours]) => (
-            <div key={date} className="mb-2">
-              <div className="flex items-center justify-between mb-1 cursor-pointer" onClick={() => date !== today && toggleDate(date)}>
-                <span className="font-bold text-sm text-muted-foreground">{date}</span>
-                {date !== today && (
-                  openDates.includes(date) ? (
-                    <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                  )
-                )}
-              </div>
-              {openDates.includes(date) || date === today ? (
+          {/* Today's patients section */}
+          {Object.entries(groupPatientsByDateAndHour(patients))
+            .filter(([date]) => date === today)
+            .map(([date, hours]) => (
+              <div key={date} className="mb-2">
+                <div className="font-bold text-sm text-primary mb-1">Today</div>
                 <div>
                   {Object.entries(hours).map(([hour, hourPatients]) => (
                     <div key={hour} className="mb-2">
@@ -269,9 +285,70 @@ export function SidebarNav() {
                     </div>
                   ))}
                 </div>
-              ) : null}
-            </div>
-          ))}
+              </div>
+            ))}
+
+          {/* Other days patients section */}
+          {Object.entries(groupPatientsByDateAndHour(patients))
+            .filter(([date]) => date !== today)
+            .map(([date, hours]) => (
+              <div key={date} className="mb-2">
+                <div className="flex items-center justify-between mb-1 cursor-pointer" onClick={() => toggleDate(date)}>
+                  <span className="font-bold text-sm text-muted-foreground">{date}</span>
+                  {openDates.includes(date) ? (
+                    <ChevronUp className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                  )}
+                </div>
+                {openDates.includes(date) && (
+                  <div>
+                    {Object.entries(hours).map(([hour, hourPatients]) => (
+                      <div key={hour} className="mb-2">
+                        <div className="flex items-center text-xs text-muted-foreground mb-1">
+                          <Clock className="h-3 w-3 mr-1" />
+                          <span>{hour}</span>
+                        </div>
+                        {hourPatients.map((patient) => (
+                          <Button
+                            key={patient.PatientID}
+                            asChild
+                            variant={pathname === `/dashboard/patient/${patient.PatientID}` ? "secondary" : "ghost"}
+                            className="w-full justify-start h-auto py-2 px-3 mb-1"
+                            size="sm"
+                          >
+                            <Link href={`/dashboard/patient/${patient.PatientID}`}>
+                              <div className="flex flex-col items-start text-left w-full">
+                                <div className="flex items-center justify-between w-full">
+                                  <span className="font-medium truncate">{patient.PatientName}</span>
+                                  {(patient.InitialAcuity || patient.FinalPatientAcuity) && (
+                                    <Badge
+                                      variant={getAcuityBadgeVariant(patient.FinalPatientAcuity || patient.InitialAcuity)}
+                                      className="ml-1 text-[10px] h-5"
+                                    >
+                                      {patient.FinalPatientAcuity || patient.InitialAcuity}
+                                    </Badge>
+                                  )}
+                                </div>
+                                <div className="flex items-center text-xs text-muted-foreground mt-1">
+                                  <span>{patient.Age} yrs</span>
+                                  {patient.Gender && (
+                                    <>
+                                      <span className="mx-1">•</span>
+                                      <span>{patient.Gender}</span>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            </Link>
+                          </Button>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
         </div>
       </ScrollArea>
 

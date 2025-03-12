@@ -148,6 +148,29 @@ function getAcuityBadgeVariant(acuity: string): "default" | "secondary" | "destr
   return "default"
 }
 
+// Helper function to format lists and capitalize
+function formatList(list: string | null | undefined): string {
+  if (!list) return "";
+  
+  try {
+    // Check if it's a JSON array
+    const parsed = JSON.parse(list);
+    if (Array.isArray(parsed)) {
+      return parsed
+        .map(item => typeof item === 'string' ? item.charAt(0).toUpperCase() + item.slice(1).toLowerCase() : item)
+        .join(', ');
+    }
+  } catch (e) {
+    // Not a JSON array, treat as string
+  }
+  
+  // If it's a comma-separated string
+  return list
+    .split(',')
+    .map(item => item.trim().charAt(0).toUpperCase() + item.trim().slice(1).toLowerCase())
+    .join(', ');
+}
+
 export default function PatientPage() {
   const params = useParams()
   const [patient, setPatient] = useState<Patient | null>(null)
@@ -382,15 +405,15 @@ export default function PatientPage() {
                     <div className="space-y-3 mt-2">
                       <div>
                         <p className="font-medium">Past Medical History</p>
-                        <p className="text-sm">{patient.PastMedicalHistory || "None recorded"}</p>
+                        <p className="text-sm">{formatList(patient.PastMedicalHistory) || "None recorded"}</p>
                       </div>
                       <div>
                         <p className="font-medium">Current Medications</p>
-                        <p className="text-sm">{patient.CurrentMedications || "None recorded"}</p>
+                        <p className="text-sm">{formatList(patient.CurrentMedications) || "None recorded"}</p>
                       </div>
                       <div>
                         <p className="font-medium">Allergies</p>
-                        <p className="text-sm">{patient.MedicationAllergies || "None recorded"}</p>
+                        <p className="text-sm">{formatList(patient.MedicationAllergies) || "None recorded"}</p>
                       </div>
                       <div>
                         <p className="font-medium">Advance Directives</p>

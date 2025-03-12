@@ -7,7 +7,7 @@ export function createClient() {
 export const signIn = async (email: string, password: string) => {
   const { data, error } = await createClient().auth.signInWithPassword({ email, password });
   if (error) throw error;
-  return data.user;
+  return data.session.user;
 }
 
 export const signOut = async () => {
