@@ -213,10 +213,10 @@ export function SidebarNav() {
             className="w-full justify-start"
             asChild
           >
-            <Link href="/dashboard/analytics">
+            {/* <Link href="/dashboard/analytics">
               <Activity className="mr-2 h-4 w-4" />
               Analytics
-            </Link>
+            </Link> */}
           </Button>
         </div>
       </div>
