@@ -7,16 +7,18 @@ import { Button } from "@/components/ui/button"
 import { createClientComponentClient } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
+import { ReactNode } from "react"
+
+type Provider = "google" | "github" | "discord"
 
 interface AuthButtonProps {
-  provider: "discord" | "google" | "github"
+  provider: Provider
   label: string
-  icon: React.ReactNode
-  variant?: "default" | "outline" | "secondary" | "destructive" | "ghost" | "link"
-  disabled?: boolean
+  icon: ReactNode
+  onClick?: () => Promise<void>
 }
 
-export function AuthButton({ provider, label, icon, variant = "outline", disabled = false }: AuthButtonProps) {
+export function AuthButton({ provider, label, icon, onClick }: AuthButtonProps) {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const supabase = createClientComponentClient()
@@ -44,8 +46,12 @@ export function AuthButton({ provider, label, icon, variant = "outline", disable
   }
 
   return (
-    <Button variant={variant} onClick={handleLogin} disabled={isLoading || disabled} className="w-full">
-      {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : icon}
+    <Button 
+      variant="outline" 
+      className="w-full" 
+      onClick={onClick}
+    >
+      {icon}
       {label}
     </Button>
   )

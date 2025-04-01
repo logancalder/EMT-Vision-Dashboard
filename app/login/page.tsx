@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 import { AuthButton } from "@/components/auth-button";
+import { FaGoogle } from "react-icons/fa";
 
 export default function LoginPage() {
   const router = useRouter()
@@ -15,7 +16,7 @@ export default function LoginPage() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: `${window.location.origin}/auth/callback`
         }
       })
       
@@ -26,19 +27,25 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-3">
-      <AuthButton
-        provider="discord"
-        label="Continue with Discord"
-        icon={<FaDiscord className="mr-2 h-4 w-4" />}
-        disabled={envError}
-      />
-      <AuthButton
-        provider="google"
-        label="Continue with Google"
-        icon={<FaGoogle className="mr-2 h-4 w-4" />}
-        disabled={envError}
-      />
+    <div className="flex items-center justify-center min-h-screen bg-background">
+      <Card className="w-[350px]">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold text-center">Welcome</CardTitle>
+          <CardDescription className="text-center">
+            Sign in to access the EMT Vision Dashboard
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4">
+            <AuthButton
+              provider="google"
+              label="Continue with Google"
+              icon={<FaGoogle className="mr-2 h-4 w-4" />}
+              onClick={handleGoogleLogin}
+            />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
