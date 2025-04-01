@@ -46,7 +46,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-6 h-full">
+    <div className="p-5 h-full">
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
       
       <div className="grid gap-6 h-[calc(100vh-8rem)]">
@@ -107,7 +107,7 @@ export default function Dashboard() {
               <CardDescription>Patient distribution by department</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[240px] w-full flex items-center justify-center bg-muted/20 dark:bg-muted/10 rounded-md">
+              <div className="h-[100px] w-full flex items-center justify-center bg-muted/20 dark:bg-muted/10 rounded-md">
                 <div className="text-center">
                   <Activity className="h-8 w-8 mx-auto text-foreground dark:text-foreground" />
                   <span className="block mt-2 text-sm text-muted-foreground">Department Chart</span>
