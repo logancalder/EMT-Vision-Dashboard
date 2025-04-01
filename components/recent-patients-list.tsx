@@ -10,8 +10,7 @@ interface Patient {
   Age: string
   Gender: string
   Time: string
-  InitialAcuity?: string
-  FinalPatientAcuity?: string
+  Severity?: string
 }
 
 interface RecentPatientsListProps {
@@ -99,12 +98,12 @@ export function RecentPatientsList({ patients, variant = "sidebar", showDate = t
                     <div className="flex flex-col items-start text-left w-full">
                       <div className="flex items-center justify-between w-full">
                         <span className="font-medium truncate">{patient.PatientName}</span>
-                        {(patient.InitialAcuity || patient.FinalPatientAcuity) && (
+                        {(patient.Severity) && (
                           <Badge
-                            variant={getAcuityBadgeVariant(patient.FinalPatientAcuity || patient.InitialAcuity)}
+                            variant={getAcuityBadgeVariant(patient.Severity)}
                             className="ml-1 text-[10px] h-5"
                           >
-                            {patient.FinalPatientAcuity || patient.InitialAcuity}
+                            {patient.Severity}
                           </Badge>
                         )}
                       </div>

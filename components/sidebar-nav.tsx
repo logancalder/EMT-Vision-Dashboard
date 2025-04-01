@@ -21,7 +21,7 @@ interface Patient {
   ZIPCode: string
   Time: string
   InitialAcuity?: string
-  FinalPatientAcuity?: string
+  Severity?: string
 }
 
 // Helper function to get acuity badge variant
@@ -226,7 +226,7 @@ export function SidebarNav() {
       {/* Patients List */}
       <div className="px-3 py-2">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-semibold">Recent Patients</h3>
+          <h3 className="text-sm font-semibold">Total Patients</h3>
           <Badge variant="outline" className="text-xs">
             {patients.length}
           </Badge>
@@ -260,12 +260,12 @@ export function SidebarNav() {
                             <div className="flex flex-col items-start text-left w-full">
                               <div className="flex items-center justify-between w-full">
                                 <span className="font-medium truncate">{patient.PatientName}</span>
-                                {(patient.InitialAcuity || patient.FinalPatientAcuity) && (
+                                {(patient.InitialAcuity || patient.Severity) && (
                                   <Badge
-                                    variant={getAcuityBadgeVariant(patient.FinalPatientAcuity || patient.InitialAcuity)}
+                                    variant={getAcuityBadgeVariant(patient.Severity || patient.InitialAcuity)}
                                     className="ml-1 text-[10px] h-5"
                                   >
-                                    {patient.FinalPatientAcuity || patient.InitialAcuity}
+                                    {patient.Severity || patient.InitialAcuity}
                                   </Badge>
                                 )}
                               </div>
@@ -321,12 +321,12 @@ export function SidebarNav() {
                               <div className="flex flex-col items-start text-left w-full">
                                 <div className="flex items-center justify-between w-full">
                                   <span className="font-medium truncate">{patient.PatientName}</span>
-                                  {(patient.InitialAcuity || patient.FinalPatientAcuity) && (
+                                  {(patient.InitialAcuity || patient.Severity) && (
                                     <Badge
-                                      variant={getAcuityBadgeVariant(patient.FinalPatientAcuity || patient.InitialAcuity)}
+                                      variant={getAcuityBadgeVariant(patient.Severity || patient.InitialAcuity)}
                                       className="ml-1 text-[10px] h-5"
                                     >
-                                      {patient.FinalPatientAcuity || patient.InitialAcuity}
+                                      {patient.Severity || patient.InitialAcuity}
                                     </Badge>
                                   )}
                                 </div>

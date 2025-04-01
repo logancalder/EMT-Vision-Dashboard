@@ -120,7 +120,7 @@ interface Patient {
   TransportDisposition: string
   LevelOfCareProvided: string
   TransferredCareAt: string
-  FinalPatientAcuity: string
+  Severity: string
   TurnaroundDelay: string
   TransportAgency: string
   TransportUnit: string
@@ -254,8 +254,8 @@ export default function PatientPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-3xl font-bold">{patient.PatientName}</h1>
-            <Badge variant={getAcuityBadgeVariant(patient.FinalPatientAcuity || patient.InitialAcuity || "")}>
-              {patient.FinalPatientAcuity || patient.InitialAcuity || "Unknown Acuity"}
+            <Badge variant={getAcuityBadgeVariant(patient.Severity || patient.InitialAcuity || "")}>
+              {patient.Severity || patient.InitialAcuity || "Unknown Acuity"}
             </Badge>
           </div>
           <p className="text-muted-foreground mt-1">
@@ -464,15 +464,9 @@ export default function PatientPage() {
 
                   <div className="mt-4 grid grid-cols-2 gap-2">
                     <div>
-                      <h4 className="text-sm font-medium">Initial Acuity</h4>
-                      <Badge variant={getAcuityBadgeVariant(patient.InitialAcuity || "")}>
-                        {patient.InitialAcuity || "Not recorded"}
-                      </Badge>
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-medium">Final Acuity</h4>
-                      <Badge variant={getAcuityBadgeVariant(patient.FinalPatientAcuity || "")}>
-                        {patient.FinalPatientAcuity || "Not recorded"}
+                      <h4 className="text-sm font-medium">Current Acuity</h4>
+                      <Badge variant={getAcuityBadgeVariant(patient.Severity || "")}>
+                        {patient.Severity || "Not recorded"}
                       </Badge>
                     </div>
                     {patient.CardiacArrest && (
@@ -746,8 +740,8 @@ export default function PatientPage() {
                   <div>
                     <h3 className="text-sm font-medium text-muted-foreground">Final Patient Acuity</h3>
                     <p className="font-medium mt-1">
-                      <Badge variant={getAcuityBadgeVariant(patient.FinalPatientAcuity || "")}>
-                        {patient.FinalPatientAcuity || "Not recorded"}
+                      <Badge variant={getAcuityBadgeVariant(patient.Severity || "")}>
+                        {patient.Severity || "Not recorded"}
                       </Badge>
                     </p>
                   </div>

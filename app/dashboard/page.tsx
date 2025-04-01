@@ -73,7 +73,7 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Recent Patients (24h)</CardTitle>
+              <CardTitle className="text-sm font-medium">Recent Patients</CardTitle>
               <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -85,7 +85,8 @@ export default function Dashboard() {
         <div className="grid gap-4 md:grid-cols-2 h-[calc(100%-8rem)]">
           <Card className="col-span-1 flex flex-col">
             <CardHeader>
-              <CardTitle className="text-lg">Recent Patients</CardTitle>
+              <CardTitle>Today's Patients</CardTitle>
+              <CardDescription>Patients admitted in the last 24 hours</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 p-0">
               <ScrollArea className="h-full px-6">

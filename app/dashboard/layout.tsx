@@ -14,7 +14,7 @@ export default function DashboardLayout({
       <SidebarNav />
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="flex justify-between items-center p-6 bg-secondary shadow-md">
-          <h1 className="text-3xl font-bold text-primary">Patient Dashboard v03d31y25</h1>
+          <h1 className="text-3xl font-bold text-primary">Patient Dashboard v04d01y25</h1>
           <div className="flex items-center space-x-4">
             <ModeToggle />
             <Link href="/login">
