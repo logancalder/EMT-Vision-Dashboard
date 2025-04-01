@@ -16,7 +16,7 @@ export default function LoginPage() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `https://v0-patient-dashboard-nine.vercel.app/auth/callback`
+          redirectTo: `${window.location.origin}/auth/callback`
         }
       })
       

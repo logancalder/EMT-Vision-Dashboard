@@ -17,9 +17,9 @@ export default function DashboardLayout({
           <h1 className="text-3xl font-bold text-primary">Patient Dashboard v04d01y25</h1>
           <div className="flex items-center space-x-4">
             <ModeToggle />
-            <Link href="/login">
+            {/* <Link href="/login">
               <Button variant="outline" className="hover:bg-gray-200">Logout</Button>
-            </Link>
+            </Link> */}
           </div>
         </header>
         <main className="flex-1 overflow-auto p-8">{children}</main>

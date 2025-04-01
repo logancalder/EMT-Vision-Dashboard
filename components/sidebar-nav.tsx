@@ -8,6 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Activity, Calendar, Clock, Home, LogOut, Settings, User, Users, ChevronDown, ChevronUp } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 interface Patient {
   PatientID: string
@@ -65,6 +66,7 @@ export function SidebarNav() {
   const pathname = usePathname()
   const [patients, setPatients] = useState<Patient[]>([])
   const [openDates, setOpenDates] = useState<string[]>([])
+  const [userProfile, setUserProfile] = useState<any>(null)
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -90,6 +92,22 @@ export function SidebarNav() {
     return () => {
       clearInterval(pollInterval)
     }
+  }, [])
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const supabase = createClientComponentClient()
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        setUserProfile({
+          name: session.user.user_metadata.full_name,
+          organization: session.user.user_metadata.email,
+          avatar: session.user.user_metadata.avatar_url
+        })
+      }
+    }
+
+    fetchUserProfile()
   }, [])
 
   // Helper function to format date and time
@@ -355,17 +373,34 @@ export function SidebarNav() {
       {/* User Profile */}
       <div className="border-t p-3">
         <div className="flex items-center space-x-3">
-          <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-            <User className="h-5 w-5" />
-          </div>
+          {userProfile?.avatar ? (
+            <img 
+              src={userProfile.avatar} 
+              alt="Profile" 
+              className="w-9 h-9 rounded-full"
+            />
+          ) : (
+            <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <User className="h-5 w-5" />
+            </div>
+          )}
           <div className="flex-1 min-w-0">
-            <p className="font-medium text-sm truncate">Dr. John Smith</p>
-            <p className="text-xs text-muted-foreground">Emergency Medicine</p>
+            <p className="font-medium text-sm truncate">{userProfile?.name || 'Loading...'}</p>
+            <p className="text-xs text-muted-foreground">{userProfile?.organization || 'Loading...'}</p>
           </div>
           <Button variant="ghost" size="icon" className="h-8 w-8">
             <Settings className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8 text-destructive"
+            onClick={async () => {
+              const supabase = createClientComponentClient()
+              await supabase.auth.signOut()
+              window.location.href = '/login'
+            }}
+          >
             <LogOut className="h-4 w-4" />
           </Button>
         </div>
