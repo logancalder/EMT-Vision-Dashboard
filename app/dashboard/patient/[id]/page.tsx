@@ -221,7 +221,7 @@ export default function PatientPage() {
         </CardHeader>
         <CardContent>
           <p className="text-destructive">{error}</p>
-          <Button variant="outline" className="mt-4" onClick={() => window.history.back()}>
+          <Button variant="outline" className="mt-4" onClick={() => window.location.href = '/dashboard'}>
             Go Back
           </Button>
         </CardContent>
