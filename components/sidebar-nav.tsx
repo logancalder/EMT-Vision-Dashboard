@@ -25,6 +25,7 @@ interface Patient {
   Severity?: string
 }
 
+
 // Helper function to get acuity badge variant
 function getAcuityBadgeVariant(acuity: string | undefined): "default" | "secondary" | "destructive" | "outline" {
   if (!acuity) return "default"
