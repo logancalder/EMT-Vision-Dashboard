@@ -24,116 +24,10 @@ import {
   Brain,
   Ambulance,
 } from "lucide-react"
-
-interface Patient {
-  PatientID: string
-  PatientName: string
-  Age: string
-  Gender: string
-  HomeAddress: string
-  City: string
-  County: string
-  State: string
-  ZIPCode: string
-  WeightKg: string
-  Race: string
-  IncidentNumber: string
-  ServiceRequested: string
-  OtherAgencies: string
-  PrimaryRole: string
-  ResponseMode: string
-  EMSShift: string
-  DispatchCity: string
-  DispatchState: string
-  DispatchZIP: string
-  DispatchCounty: string
-  SceneType: string
-  Category: string
-  BackInService: string
-  CrewMembers: string
-  NumberOfCrew: string
-  OtherAgencyOnScene: string
-  NumberOfPatients: string
-  PatientContactMade: string
-  ArrivedOnScene: string
-  FirstOnScene: string
-  StagePriorToContact: string
-  PrimaryComplaint: string
-  Duration: string
-  TimeUnits: string
-  AlcoholDrugUse: string
-  InitialAcuity: string
-  CardiacArrest: string
-  PossibleInjury: string
-  BaseContactMade: string
-  SignsOfAbuse: string
-  "5150Hold": string
-  PastMedicalHistory: string
-  CurrentMedications: string
-  MedicationAllergies: string
-  AdvanceDirectives: string
-  HeartRate: string
-  BloodPressure: string
-  RespiratoryRate: string
-  SPO2: string
-  Temperature: string
-  Glucose: string
-  GCS_Eye: string
-  GCS_Verbal: string
-  GCS_Motor: string
-  GCS_Score: string
-  GCS_Qualifier: string
-  MentalStatus: string
-  AbdomenExam: string
-  ChestExam: string
-  BackSpineExam: string
-  SkinAssessment: string
-  EyeExam_Bilateral: string
-  EyeExam_Left: string
-  EyeExam_Right: string
-  LungExam: string
-  ExtremitiesExam: string
-  PrimaryImpression: string
-  PrimarySymptom: string
-  OtherSymptoms: string
-  SymptomOnset: string
-  TypeOfPatient: string
-  MedTime: string
-  MedCrewID: string
-  Medication: string
-  Dosage: string
-  MedUnits: string
-  Route: string
-  MedResponse: string
-  MedComplications: string
-  ProcTime: string
-  ProcCrewID: string
-  Procedure: string
-  ProcLocation: string
-  IVLocation: string
-  Size: string
-  Attempts: string
-  Successful: string
-  ProcResponse: string
-  PatientEvaluationCare: string
-  CrewDisposition: string
-  TransportDisposition: string
-  LevelOfCareProvided: string
-  TransferredCareAt: string
-  Severity: string
-  TurnaroundDelay: string
-  TransportAgency: string
-  TransportUnit: string
-  LevelOfTransport: string
-  EMSPrimaryCareProvider: string
-  TransportReason: string
-  CrewSignature: string
-  CrewMember_PPE: string
-  PPEUsed: string
-  SuspectedExposure: string
-  MonitorTime: string
-  MonitorEventType: string
-}
+import { generatePatientPDF } from "@/utils/pdf-generator"
+import { PatientEditModal } from "@/components/patient-edit-modal"
+import { MedicationHistory } from "@/components/medication-history"
+import { Patient } from "@/types/patient"
 
 // Helper function to get acuity badge color
 function getAcuityBadgeVariant(acuity: string): "default" | "secondary" | "destructive" | "outline" {
@@ -176,6 +70,7 @@ export default function PatientPage() {
   const [patient, setPatient] = useState<Patient | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [editModalOpen, setEditModalOpen] = useState(false)
 
   useEffect(() => {
     async function fetchPatient() {
@@ -198,6 +93,10 @@ export default function PatientPage() {
 
     fetchPatient()
   }, [params.id])
+
+  const handlePatientUpdated = (updatedPatient: Patient) => {
+    setPatient(updatedPatient)
+  }
 
   if (loading) {
     return (
@@ -263,22 +162,33 @@ export default function PatientPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => window.print()}>
+          <Button variant="outline" onClick={() => patient && generatePatientPDF(patient)}>
             <FileText className="mr-2 h-4 w-4" />
             Print Record
           </Button>
-          <Button>
+          <Button onClick={() => setEditModalOpen(true)}>
             <Clipboard className="mr-2 h-4 w-4" />
             Edit Record
           </Button>
         </div>
       </div>
 
+      {/* Edit Modal */}
+      {patient && (
+        <PatientEditModal
+          patient={patient}
+          open={editModalOpen}
+          onOpenChange={setEditModalOpen}
+          onPatientUpdated={handlePatientUpdated}
+        />
+      )}
+
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid grid-cols-4 mb-6">
+        <TabsList className="grid grid-cols-5 mb-6">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="assessment">Assessment</TabsTrigger>
           <TabsTrigger value="treatment">Treatment</TabsTrigger>
+          <TabsTrigger value="medications">Medications</TabsTrigger>
           <TabsTrigger value="incident">Incident Details</TabsTrigger>
         </TabsList>
 
@@ -387,14 +297,32 @@ export default function PatientPage() {
                     <div className="space-y-2">
                       <div className="flex items-start gap-2">
                         <Home className="h-4 w-4 mt-0.5 flex-shrink-0 text-muted-foreground" />
-                        <div>
+                        <div className="space-y-1">
                           <p className="font-medium">{patient.HomeAddress || "No address on file"}</p>
-                          {patient.City && patient.State && patient.ZIPCode && (
-                            <p>
-                              {patient.City}, {patient.State} {patient.ZIPCode}
-                            </p>
+                          <div className="grid grid-cols-2 gap-2 text-sm">
+                            <div>
+                              <span className="text-muted-foreground">City:</span>
+                              <span className="ml-2">{patient.City || "N/A"}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">State:</span>
+                              <span className="ml-2">{patient.State || "N/A"}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">ZIP:</span>
+                              <span className="ml-2">{patient.ZIPCode || "N/A"}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">County:</span>
+                              <span className="ml-2">{patient.County || "N/A"}</span>
+                            </div>
+                          </div>
+                          {patient.ContactInfo && (
+                            <div className="mt-2">
+                              <span className="text-muted-foreground">Contact:</span>
+                              <span className="ml-2">{patient.ContactInfo}</span>
+                            </div>
                           )}
-                          {patient.County && <p>County: {patient.County}</p>}
                         </div>
                       </div>
                     </div>
@@ -759,6 +687,10 @@ export default function PatientPage() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="medications" className="space-y-6">
+          <MedicationHistory patientId={patient.PatientID} />
         </TabsContent>
 
         <TabsContent value="incident" className="space-y-6">

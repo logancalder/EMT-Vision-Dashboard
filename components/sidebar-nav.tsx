@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator"
 import { Activity, Calendar, Clock, Home, LogOut, Settings, User, Users, ChevronDown, ChevronUp } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface Patient {
   PatientID: string
@@ -374,17 +375,15 @@ export function SidebarNav() {
       {/* User Profile */}
       <div className="border-t p-3">
         <div className="flex items-center space-x-3">
-          {userProfile?.avatar ? (
-            <img 
-              src={userProfile.avatar} 
-              alt="Profile" 
-              className="w-9 h-9 rounded-full"
+          <Avatar className="h-9 w-9">
+            <AvatarImage 
+              src={userProfile?.avatar} 
+              alt={userProfile?.name || 'User'} 
             />
-          ) : (
-            <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-              <User className="h-5 w-5" />
-            </div>
-          )}
+            <AvatarFallback>
+              {userProfile?.name ? userProfile.name.charAt(0).toUpperCase() : 'U'}
+            </AvatarFallback>
+          </Avatar>
           <div className="flex-1 min-w-0">
             <p className="font-medium text-sm truncate">{userProfile?.name || 'Loading...'}</p>
             <p className="text-xs text-muted-foreground">{userProfile?.organization || 'Loading...'}</p>

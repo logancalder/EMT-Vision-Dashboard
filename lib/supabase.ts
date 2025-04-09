@@ -1,8 +1,10 @@
 import { createClient } from "@supabase/supabase-js"
 
 // Default to empty strings during development to prevent crashes
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export const createClientComponentClient = () => {
   // Check if we're in a browser environment and warn if variables are missing
