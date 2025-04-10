@@ -163,7 +163,7 @@ export function SidebarNav() {
     <div className="w-64 bg-card border-r h-screen flex flex-col">
       {/* Logo and Header */}
       <div className="p-4 flex flex-col items-center">
-        <Link href="/" className="flex items-center justify-center mb-2">
+        <Link href="/dashboard" className="flex items-center justify-center mb-2">
         <div className="relative w-10 h-10 mr-2">
       {/* Balance Scale SVG */}
       <svg viewBox="0 0 128 128" className="text-primary w-full h-full">
@@ -212,41 +212,17 @@ export function SidebarNav() {
       {/* End of Balance Scale SVG */}
     </div>
           <div className="flex flex-col">
-            <span className="font-bold text-lg text-primary">EMT Vision</span>
+            <span className="font-bold text-lg tracking-tight text-primary">EMT Vision</span>
             <span className="text-xs text-muted-foreground">Healthcare Dashboard</span>
           </div>
         </Link>
         <Separator className="my-2" />
       </div>
 
-      {/* Navigation */}
-      <div className="px-3 py-2">
-        <div className="space-y-1">
-          <Button variant={pathname === "/dashboard" ? "secondary" : "ghost"} className="w-full justify-start" asChild>
-            <Link href="/dashboard">
-              <Home className="mr-2 h-4 w-4" />
-              Dashboard
-            </Link>
-          </Button>
-          <Button
-            variant={pathname === "/dashboard/analytics" ? "secondary" : "ghost"}
-            className="w-full justify-start"
-            asChild
-          >
-            {/* <Link href="/dashboard/analytics">
-              <Activity className="mr-2 h-4 w-4" />
-              Analytics
-            </Link> */}
-          </Button>
-        </div>
-      </div>
-
-      <Separator className="my-2" />
-
       {/* Patients List */}
       <div className="px-3 py-2">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-semibold">Total Patients</h3>
+          <h3 className="text-sm font-semibold tracking-tight">Total Patients</h3>
           <Badge variant="outline" className="text-xs">
             {patients.length}
           </Badge>

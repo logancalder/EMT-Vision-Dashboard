@@ -10,6 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useToast } from "@/components/ui/use-toast"
 import { supabase } from "@/lib/supabase"
 import { Patient } from "@/types/patient"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { AlertTriangle, Activity, Heart, CheckCircle2 } from "lucide-react"
 
 interface PatientEditModalProps {
   patient: Patient
@@ -101,6 +103,40 @@ export function PatientEditModal({
       ...prev,
       [field]: value,
     }))
+  }
+
+  const getSeverityColor = (severity: string) => {
+    switch (severity.toLowerCase()) {
+      case "critical":
+        return "bg-red-500/10 text-red-500 hover:bg-red-500/20"
+      case "severe":
+        return "bg-orange-500/10 text-orange-500 hover:bg-orange-500/20"
+      case "moderate":
+        return "bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20"
+      case "mild":
+        return "bg-green-500/10 text-green-500 hover:bg-green-500/20"
+      case "discharged":
+        return "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20"
+      default:
+        return "bg-gray-500/10 text-gray-500 hover:bg-gray-500/20"
+    }
+  }
+
+  const getSeverityIcon = (severity: string) => {
+    switch (severity.toLowerCase()) {
+      case "critical":
+        return <AlertTriangle className="h-4 w-4" />
+      case "severe":
+        return <Activity className="h-4 w-4" />
+      case "moderate":
+        return <Heart className="h-4 w-4" />
+      case "mild":
+        return <CheckCircle2 className="h-4 w-4" />
+      case "discharged":
+        return <CheckCircle2 className="h-4 w-4" />
+      default:
+        return <Activity className="h-4 w-4" />
+    }
   }
 
   return (
@@ -197,6 +233,27 @@ export function PatientEditModal({
                   value={editedPatient.ContactInfo}
                   onChange={(e) => handleInputChange("ContactInfo", e.target.value)}
                 />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="severity">Severity</Label>
+                <Select
+                  defaultValue={patient.Severity}
+                  onValueChange={(value) => setEditedPatient({ ...editedPatient, Severity: value })}
+                >
+                  <SelectTrigger className={`w-full ${getSeverityColor(editedPatient.Severity)}`}>
+                    <div className="flex items-center gap-2">
+                      {getSeverityIcon(editedPatient.Severity)}
+                      <SelectValue placeholder="Select severity" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Critical">Critical</SelectItem>
+                    <SelectItem value="Severe">Severe</SelectItem>
+                    <SelectItem value="Moderate">Moderate</SelectItem>
+                    <SelectItem value="Mild">Mild</SelectItem>
+                    <SelectItem value="Discharged">Discharged</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </TabsContent>

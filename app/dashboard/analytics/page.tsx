@@ -20,10 +20,10 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Patient Demographics</CardTitle>
+            <CardTitle className="text-lg font-bold tracking-tight">Patient Demographics</CardTitle>
             <CardDescription>Age distribution of patients</CardDescription>
           </CardHeader>
           <CardContent>
@@ -51,7 +51,7 @@ export default function AnalyticsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Monthly Calls</CardTitle>
+            <CardTitle className="text-lg font-bold tracking-tight">Monthly Calls</CardTitle>
             <CardDescription>Patient calls over the last 6 months</CardDescription>
           </CardHeader>
           <CardContent>
@@ -76,7 +76,7 @@ export default function AnalyticsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Call Genre</CardTitle>
+            <CardTitle className="text-lg font-bold tracking-tight">Call Genre</CardTitle>
             <CardDescription>Genre of calls over the last 6 months</CardDescription>
           </CardHeader>
           <CardContent>
@@ -102,7 +102,6 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
       </div>
-
     </div>
   )
 }

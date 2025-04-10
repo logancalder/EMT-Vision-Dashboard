@@ -2,12 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Activity, Heart, Plus, Search, User, Users, AlertCircle, Clock } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { Activity, Users, AlertCircle, Clock } from "lucide-react"
 import { RecentPatientsList } from "@/components/recent-patients-list"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
@@ -47,37 +42,37 @@ export default function Dashboard() {
 
   return (
     <div className="p-5 h-full">
-      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+      <h1 className="text-3xl font-bold tracking-tight mb-6">Dashboard</h1>
       
       <div className="grid gap-6 h-[calc(100vh-8rem)]">
         <div className="grid gap-4 md:grid-cols-3">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-bold">Total Patients</CardTitle>
+              <CardTitle className="text-sm font-medium tracking-tight">Total Patients</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats?.totalPatients || 0}</div>
+              <div className="text-2xl font-bold tracking-tight">{stats?.totalPatients || 0}</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Critical Cases</CardTitle>
+              <CardTitle className="text-sm font-medium tracking-tight">Critical Cases</CardTitle>
               <AlertCircle className="h-4 w-4 text-destructive" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats?.criticalCases || 0}</div>
+              <div className="text-2xl font-bold tracking-tight">{stats?.criticalCases || 0}</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Recent Patients</CardTitle>
+              <CardTitle className="text-sm font-medium tracking-tight">Patients Today</CardTitle>
               <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats?.recentPatients || 0}</div>
+              <div className="text-2xl font-bold tracking-tight">{stats?.recentPatients || 0}</div>
             </CardContent>
           </Card>
         </div>
@@ -85,7 +80,7 @@ export default function Dashboard() {
         <div className="grid gap-4 md:grid-cols-2 h-[calc(100%-8rem)]">
           <Card className="col-span-1 flex flex-col">
             <CardHeader>
-              <CardTitle>Today's Patients</CardTitle>
+              <CardTitle className="text-lg font-bold tracking-tight">Recent Patients</CardTitle>
               <CardDescription>Patients admitted in the last 24 hours</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 p-0">
@@ -103,7 +98,7 @@ export default function Dashboard() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Department Stats</CardTitle>
+              <CardTitle className="text-lg font-bold tracking-tight">Department Stats</CardTitle>
               <CardDescription>Patient distribution by department</CardDescription>
             </CardHeader>
             <CardContent>

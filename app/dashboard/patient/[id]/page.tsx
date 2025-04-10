@@ -23,11 +23,15 @@ import {
   TreesIcon as Lungs,
   Brain,
   Ambulance,
+  Pencil,
+  AlertTriangle,
+  CheckCircle2,
 } from "lucide-react"
 import { generatePatientPDF } from "@/utils/pdf-generator"
 import { PatientEditModal } from "@/components/patient-edit-modal"
 import { MedicationHistory } from "@/components/medication-history"
 import { Patient } from "@/types/patient"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 // Helper function to get acuity badge color
 function getAcuityBadgeVariant(acuity: string): "default" | "secondary" | "destructive" | "outline" {
@@ -98,6 +102,40 @@ export default function PatientPage() {
     setPatient(updatedPatient)
   }
 
+  const getSeverityColor = (severity: string) => {
+    switch (severity.toLowerCase()) {
+      case "critical":
+        return "bg-red-500/10 text-red-500 hover:bg-red-500/20"
+      case "severe":
+        return "bg-orange-500/10 text-orange-500 hover:bg-orange-500/20"
+      case "moderate":
+        return "bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20"
+      case "mild":
+        return "bg-green-500/10 text-green-500 hover:bg-green-500/20"
+      case "discharged":
+        return "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20"
+      default:
+        return "bg-gray-500/10 text-gray-500 hover:bg-gray-500/20"
+    }
+  }
+
+  const getSeverityIcon = (severity: string) => {
+    switch (severity.toLowerCase()) {
+      case "critical":
+        return <AlertTriangle className="h-4 w-4" />
+      case "severe":
+        return <Activity className="h-4 w-4" />
+      case "moderate":
+        return <Heart className="h-4 w-4" />
+      case "mild":
+        return <CheckCircle2 className="h-4 w-4" />
+      case "discharged":
+        return <CheckCircle2 className="h-4 w-4" />
+      default:
+        return <Activity className="h-4 w-4" />
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[70vh]">
@@ -153,9 +191,6 @@ export default function PatientPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-3xl font-bold">{patient.PatientName}</h1>
-            <Badge variant={getAcuityBadgeVariant(patient.Severity || patient.InitialAcuity || "")}>
-              {patient.Severity || patient.InitialAcuity || "Unknown Acuity"}
-            </Badge>
           </div>
           <p className="text-muted-foreground mt-1">
             {patient.Age} years • {patient.Gender} • Incident #{patient.IncidentNumber}
@@ -357,7 +392,7 @@ export default function PatientPage() {
           {/* Primary Complaint & Impression */}
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg flex items-center">
+              <CardTitle className="text-lg font-bold tracking-tight flex items-center">
                 <Stethoscope className="mr-2 h-5 w-5 text-primary" />
                 Primary Complaint & Impression
               </CardTitle>
@@ -451,7 +486,7 @@ export default function PatientPage() {
           {/* Physical Examination */}
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg flex items-center">
+              <CardTitle className="text-lg font-bold tracking-tight flex items-center">
                 <Stethoscope className="mr-2 h-5 w-5 text-primary" />
                 Physical Examination
               </CardTitle>
@@ -518,62 +553,6 @@ export default function PatientPage() {
         </TabsContent>
 
         <TabsContent value="treatment" className="space-y-6">
-          {/* Medication */}
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg flex items-center">
-                <Pill className="mr-2 h-5 w-5 text-primary" />
-                Medication
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {patient.Medication ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="text-sm font-medium text-muted-foreground">Medication</h3>
-                      <p className="font-medium mt-1">{patient.Medication}</p>
-                    </div>
-
-                    <div>
-                      <h3 className="text-sm font-medium text-muted-foreground">Dosage</h3>
-                      <p className="font-medium mt-1">
-                        {patient.Dosage} {patient.MedUnits}
-                      </p>
-                    </div>
-
-                    <div>
-                      <h3 className="text-sm font-medium text-muted-foreground">Route</h3>
-                      <p className="font-medium mt-1">{patient.Route || "Not specified"}</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="text-sm font-medium text-muted-foreground">Time</h3>
-                      <p className="font-medium mt-1">{patient.MedTime || "Not recorded"}</p>
-                    </div>
-
-                    <div>
-                      <h3 className="text-sm font-medium text-muted-foreground">Response</h3>
-                      <p className="font-medium mt-1">{patient.MedResponse || "Not recorded"}</p>
-                    </div>
-
-                    <div>
-                      <h3 className="text-sm font-medium text-muted-foreground">Complications</h3>
-                      <p className="font-medium mt-1">{patient.MedComplications || "None"}</p>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center py-6 text-muted-foreground">
-                  <Pill className="h-10 w-10 mx-auto mb-2 opacity-30" />
-                  <p>No medications administered</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
           {/* Procedures */}
           <Card>
             <CardHeader className="pb-2">
@@ -827,7 +806,7 @@ export default function PatientPage() {
           {/* Additional Information */}
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg flex items-center">
+              <CardTitle className="text-lg font-bold tracking-tight flex items-center">
                 <FileText className="mr-2 h-5 w-5 text-primary" />
                 Additional Information
               </CardTitle>
