@@ -53,7 +53,7 @@ export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="fixed top-0 z-50 w-full backdrop-blur-md bg-background/80 border-b border-border/40">
-        <div className="container flex h-16 items-center justify-between px-6 md:px-10">
+        <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <div className="logo relative h-8 w-8 flex items-center justify-center">
             <svg viewBox="0 0 128 128" className="text-primary w-full h-full">
@@ -154,7 +154,7 @@ export default function LandingPage() {
           }}
         ></div>
 
-        <div className="container px-6 md:px-10 lg:px-16 z-10 mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 mt-16">
           <div className="hero-content max-w-4xl mx-auto text-center space-y-8">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
               <span className="text-primary">Hands-Free</span> ePCR Documentation
@@ -233,7 +233,7 @@ export default function LandingPage() {
 
       {/* Product Showcase */}
       <section id="about" className="py-24 md:py-32 overflow-hidden">
-        <div className="container px-6 md:px-10 lg:px-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <div className="grid gap-12 lg:grid-cols-2 items-center">
               <div className="space-y-6 p-4">
@@ -346,7 +346,7 @@ export default function LandingPage() {
 
       {/* Testimonials */}
       <section id="testimonials" className="py-24 md:py-32">
-        <div className="container px-6 md:px-10 lg:px-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4">
@@ -449,7 +449,7 @@ export default function LandingPage() {
 
       {/* CTA Section */}
       <section className="py-24 md:py-32 bg-secondary/50">
-        <div className="container px-6 md:px-10 lg:px-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center space-y-6">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
@@ -475,7 +475,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t py-12 md:py-16 bg-background">
-        <div className="container px-6 md:px-10 lg:px-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
             <div className="flex items-center gap-3">
               <ActivityIcon className="h-6 w-6 text-primary" />
