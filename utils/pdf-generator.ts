@@ -3,7 +3,6 @@ import 'jspdf-autotable';
 import { Patient } from '@/types/patient';
 
 export function generatePatientPDF(patient: Patient) {
-  // Create a new PDF document with A4 size
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
