@@ -110,26 +110,26 @@ export default function LandingPage() {
             >
               Features
             </Link> */}
-            <Link 
+            {/* <Link 
               href="#about" 
               onClick={(e) => scrollToSection(e, "about")}
               className="nav-link text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
             >
               About
-            </Link>
-            <Link
+            </Link> */}
+            {/* <Link
               href="#testimonials"
               onClick={(e) => scrollToSection(e, "testimonials")}
               className="nav-link text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
             >
               Testimonials
-            </Link>
-            <Link
+            </Link> */}
+            {/* <Link
               href="/contact"
               className="nav-link text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
             >
               Contact
-            </Link>
+            </Link> */}
           </nav>
           <div className="flex items-center gap-4">
             <ThemeToggle />
@@ -345,7 +345,7 @@ export default function LandingPage() {
       </ParallaxSection>
 
       {/* Testimonials */}
-      <section id="testimonials" className="py-24 md:py-32">
+      {/* <section id="testimonials" className="py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center mb-16">
@@ -445,10 +445,10 @@ export default function LandingPage() {
             </ScrollReveal>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
-      <section className="py-24 md:py-32 bg-secondary/50">
+      {/* <section className="py-24 md:py-32 bg-secondary/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center space-y-6">
@@ -471,7 +471,7 @@ export default function LandingPage() {
             </div>
           </ScrollReveal>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
       <footer className="border-t py-12 md:py-16 bg-background">
@@ -496,13 +496,13 @@ export default function LandingPage() {
               >
                 About
               </Link>
-              <Link 
+              {/* <Link 
                 href="#testimonials" 
                 onClick={(e) => scrollToSection(e, "testimonials")}
                 className="footer-link text-sm text-foreground/70 hover:text-primary transition-colors"
               >
                 Testimonials
-              </Link>
+              </Link> */}
               <Link 
                 href="/contact" 
                 className="footer-link text-sm text-foreground/70 hover:text-primary transition-colors"
