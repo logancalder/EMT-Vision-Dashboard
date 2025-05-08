@@ -10,6 +10,7 @@ import { Activity, Calendar, Clock, Home, LogOut, Settings, User, Users, Chevron
 import { Badge } from "@/components/ui/badge"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { formatName, formatValue, formatMedicalCondition } from "@/utils/format"
 
 interface Patient {
   PatientID: string
@@ -254,25 +255,18 @@ export function SidebarNav() {
                         >
                           <Link href={`/dashboard/patient/${patient.PatientID}`}>
                             <div className="flex flex-col items-start text-left w-full">
-                              <div className="flex items-center justify-between w-full">
-                                <span className="font-medium truncate">{patient.PatientName}</span>
-                                {(patient.InitialAcuity || patient.Severity) && (
-                                  <Badge
-                                    variant={getAcuityBadgeVariant(patient.Severity || patient.InitialAcuity)}
-                                    className="ml-1 text-[10px] h-5"
-                                  >
-                                    {patient.Severity || patient.InitialAcuity}
-                                  </Badge>
-                                )}
-                              </div>
-                              <div className="flex items-center text-xs text-muted-foreground mt-1">
-                                <span>{patient.Age} yrs</span>
-                                {patient.Gender && (
-                                  <>
-                                    <span className="mx-1">•</span>
-                                    <span>{patient.Gender}</span>
-                                  </>
-                                )}
+                              <div className="flex items-center gap-2">
+                                <div className="flex-1 min-w-0">
+                                  <p className="font-medium truncate">
+                                    {formatName(patient.PatientName)}
+                                  </p>
+                                  <p className="text-sm text-muted-foreground truncate">
+                                    {formatValue(patient.Age)} years • {formatValue(patient.Gender)}
+                                  </p>
+                                </div>
+                                <Badge variant={getAcuityBadgeVariant(patient.Severity || "")}>
+                                  {formatMedicalCondition(patient.Severity)}
+                                </Badge>
                               </div>
                             </div>
                           </Link>
@@ -315,25 +309,18 @@ export function SidebarNav() {
                           >
                             <Link href={`/dashboard/patient/${patient.PatientID}`}>
                               <div className="flex flex-col items-start text-left w-full">
-                                <div className="flex items-center justify-between w-full">
-                                  <span className="font-medium truncate">{patient.PatientName}</span>
-                                  {(patient.InitialAcuity || patient.Severity) && (
-                                    <Badge
-                                      variant={getAcuityBadgeVariant(patient.Severity || patient.InitialAcuity)}
-                                      className="ml-1 text-[10px] h-5"
-                                    >
-                                      {patient.Severity || patient.InitialAcuity}
-                                    </Badge>
-                                  )}
-                                </div>
-                                <div className="flex items-center text-xs text-muted-foreground mt-1">
-                                  <span>{patient.Age} yrs</span>
-                                  {patient.Gender && (
-                                    <>
-                                      <span className="mx-1">•</span>
-                                      <span>{patient.Gender}</span>
-                                    </>
-                                  )}
+                                <div className="flex items-center gap-2">
+                                  <div className="flex-1 min-w-0">
+                                    <p className="font-medium truncate">
+                                      {formatName(patient.PatientName)}
+                                    </p>
+                                    <p className="text-sm text-muted-foreground truncate">
+                                      {formatValue(patient.Age)} years • {formatValue(patient.Gender)}
+                                    </p>
+                                  </div>
+                                  <Badge variant={getAcuityBadgeVariant(patient.Severity || "")}>
+                                    {formatMedicalCondition(patient.Severity)}
+                                  </Badge>
                                 </div>
                               </div>
                             </Link>

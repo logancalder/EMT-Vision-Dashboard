@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Clock, ChevronDown, ChevronUp } from "lucide-react"
+import { formatName, formatValue, formatMedicalCondition } from "@/utils/format"
 
 interface Patient {
   PatientID: string
@@ -11,6 +12,7 @@ interface Patient {
   Gender: string
   Time: string
   Severity?: string
+  InitialAcuity?: string
 }
 
 interface RecentPatientsListProps {
@@ -96,25 +98,18 @@ export function RecentPatientsList({ patients, variant = "sidebar", showDate = t
                 >
                   <Link href={`/dashboard/patient/${patient.PatientID}`}>
                     <div className="flex flex-col items-start text-left w-full">
-                      <div className="flex items-center justify-between w-full">
-                        <span className="font-medium truncate">{patient.PatientName}</span>
-                        {(patient.Severity) && (
-                          <Badge
-                            variant={getAcuityBadgeVariant(patient.Severity)}
-                            className="ml-1 text-[10px] h-5"
-                          >
-                            {patient.Severity}
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="flex items-center text-xs text-muted-foreground mt-1">
-                        <span>{patient.Age} yrs</span>
-                        {patient.Gender && (
-                          <>
-                            <span className="mx-1">•</span>
-                            <span>{patient.Gender}</span>
-                          </>
-                        )}
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium truncate">
+                            {formatName(patient.PatientName)}
+                          </p>
+                          <p className="text-sm text-muted-foreground truncate">
+                            {formatValue(patient.Age)} years • {formatValue(patient.Gender)}
+                          </p>
+                        </div>
+                        <Badge variant={getAcuityBadgeVariant(patient.InitialAcuity || "")}>
+                          {formatMedicalCondition(patient.InitialAcuity)}
+                        </Badge>
                       </div>
                     </div>
                   </Link>
