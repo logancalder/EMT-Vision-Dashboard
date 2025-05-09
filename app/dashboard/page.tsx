@@ -99,9 +99,9 @@ export default function Dashboard() {
           
           // Count gender
           const gender = patient.Gender?.toLowerCase() || "other"
-          if (gender.includes("male")) {
+          if (gender === "male" || gender === "m") {
             demographicStats.gender.male++
-          } else if (gender.includes("female")) {
+          } else if (gender === "female" || gender === "f") {
             demographicStats.gender.female++
           } else {
             demographicStats.gender.other++

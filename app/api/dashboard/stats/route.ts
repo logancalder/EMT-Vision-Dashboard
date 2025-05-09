@@ -10,56 +10,41 @@ export async function GET() {
 
     if (countError) throw countError
 
-    // Get today's date in YYYY-MM-DD format
-    const today = new Date()
-    const todayStr = today.toISOString().split('T')[0]
-
-    // Get critical cases - exact match for "Critical" in Severity
-    const { data: criticalCases, error: criticalError } = await supabase
-      .from('PatientData')
-      .select('Severity')
-      .eq('Severity', 'Critical')
-      // .gte('Time', `${todayStr} 00:00:00`)
-      // .lte('Time', `${todayStr} 23:59:59`)
-
-    if (criticalError) throw criticalError
-
     // Get recent patients - last 24 hours
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
-    const twentyFourHoursAgoStr = twentyFourHoursAgo.toISOString().replace('T', ' ').slice(0, 19)
-
+    
     const { data: recentPatients, error: recentError } = await supabase
       .from('PatientData')
       .select('PatientID, PatientName, Age, Gender, Severity, Time')
-      .gte('Time', twentyFourHoursAgoStr)
+      .gte('Time', twentyFourHoursAgo.toISOString())
       .order('Time', { ascending: false })
 
     if (recentError) throw recentError
 
+    // Calculate critical cases from recent patients
+    const criticalCases = recentPatients?.filter(patient => 
+      patient.Severity?.toLowerCase() === 'critical'
+    ) || []
+
     // Debug logs
     console.log('Dashboard Stats Query:', {
-      todayStr,
-      twentyFourHoursAgoStr,
-      criticalCasesQuery: {
-        severity: 'Critical',
-        timeRange: `${todayStr} 00:00:00 to ${todayStr} 23:59:59`
-      },
+      twentyFourHoursAgo: twentyFourHoursAgo.toISOString(),
       recentPatientsQuery: {
-        timeRange: `${twentyFourHoursAgoStr} to now`
+        timeRange: `${twentyFourHoursAgo.toISOString()} to now`
       }
     })
 
     console.log('Dashboard Stats Results:', {
       totalPatients,
-      criticalCasesCount: criticalCases?.length || 0,
+      criticalCasesCount: criticalCases.length,
       recentPatientsCount: recentPatients?.length || 0,
-      sampleCriticalCase: criticalCases?.[0],
+      sampleCriticalCase: criticalCases[0],
       sampleRecentPatient: recentPatients?.[0]
     })
 
     return NextResponse.json({
       totalPatients: totalPatients || 0,
-      criticalCases: criticalCases?.length || 0,
+      criticalCases: criticalCases.length,
       recentPatients: recentPatients?.length || 0,
       recentPatientsList: recentPatients || []
     })
