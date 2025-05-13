@@ -512,7 +512,7 @@ export default function LandingPage() {
             </nav>
           </div>
           <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-foreground/60">© 2025 EMT Vision. All rights reserved.</p>
+            <p className="text-sm text-foreground/60">© 2025 EMT Vision. All rights reserved. Developed by Logan Calder for Senior Design 2025.</p>
             <div className="flex gap-6">
               <Link href="#" className="footer-link text-sm text-foreground/60 hover:text-primary transition-colors">
                 Privacy Policy
