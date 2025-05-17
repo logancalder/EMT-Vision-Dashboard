@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -12,6 +12,8 @@ import "./landing.css"
 
 export default function LandingPage() {
   // Initialize scroll animations
+  const [showArrow, setShowArrow] = useState(true)
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY
@@ -22,12 +24,8 @@ export default function LandingPage() {
         heroSection.setAttribute("style", `transform: translateY(${scrollPosition * 0.2}px)`)
       }
 
-      // Remove logo fade effect
-      // const logo = document.querySelector(".logo")
-      // if (logo) {
-      //   const opacity = Math.max(1 - scrollPosition / 500, 0.2)
-      //   logo.setAttribute("style", `opacity: ${opacity}`)
-      // }
+      // Arrow fade logic
+      setShowArrow(scrollPosition < 10)
     }
 
     window.addEventListener("scroll", handleScroll)
@@ -159,6 +157,12 @@ export default function LandingPage() {
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
               <span className="text-primary">Hands-Free</span> ePCR Documentation
             </h1>
+            <div className="flex justify-center mt-4">
+              <span className="inline-block rounded-full bg-yellow-200 text-yellow-800 px-4 py-1 text-sm font-semibold shadow-sm border border-yellow-300 flex items-center gap-2">
+                <span role="img" aria-label="trophy">🏆</span>
+                2025 SCU Senior Design Winner
+              </span>
+            </div>
             <p className="max-w-[600px] mx-auto text-foreground/80 text-lg md:text-xl">
               AR headset technology that automatically transcribes your calls and auto-populates patient ePCR forms, saving valuable time in emergency situations.
             </p>
@@ -166,22 +170,21 @@ export default function LandingPage() {
               <Button size="lg" className="rounded-full cta-button">
                 Learn More
               </Button>
-              <Button size="lg" variant="outline" className="rounded-full cta-button">
-                Book a Demo
-              </Button>
             </div>
           </div>
         </div>
 
         {/* Floating heartbeat animation */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div
+          className={`absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce transition-opacity duration-500 pointer-events-none ${showArrow ? 'opacity-100' : 'opacity-0'}`}
+        >
           <ArrowRightIcon className="h-6 w-6 rotate-90 text-primary/70" />
         </div>
       </section>
 
       {/* Features Section */}
       <ParallaxSection className="py-24 md:py-32 bg-secondary/50">
-        <div className="container px-6 md:px-10 lg:px-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4">
@@ -273,7 +276,7 @@ export default function LandingPage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/5 rounded-3xl -rotate-1"></div>
                 <div className="relative bg-background rounded-2xl border shadow-lg overflow-hidden rotate-1 transform transition-transform hover:rotate-0 duration-500">
                   <Image
-                    src="/placeholder.svg?height=600&width=800"
+                    src="/hololens.png"
                     width={800}
                     height={600}
                     alt="EMT Vision AR headset"
@@ -288,7 +291,7 @@ export default function LandingPage() {
 
       {/* Benefits Section */}
       <ParallaxSection className="py-24 md:py-32 bg-secondary/50">
-        <div className="container px-6 md:px-10 lg:px-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4">
@@ -298,7 +301,7 @@ export default function LandingPage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 justify-center">
             <ScrollReveal delay={100}>
               <div className="testimonial-card bg-background rounded-xl p-8 shadow-sm border">
                 <div className="flex flex-col gap-4">
@@ -496,31 +499,10 @@ export default function LandingPage() {
               >
                 About
               </Link>
-              {/* <Link 
-                href="#testimonials" 
-                onClick={(e) => scrollToSection(e, "testimonials")}
-                className="footer-link text-sm text-foreground/70 hover:text-primary transition-colors"
-              >
-                Testimonials
-              </Link> */}
-              <Link 
-                href="/contact" 
-                className="footer-link text-sm text-foreground/70 hover:text-primary transition-colors"
-              >
-                Contact
-              </Link>
             </nav>
           </div>
           <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-foreground/60">© 2025 EMT Vision. All rights reserved. Developed by Logan Calder for Senior Design 2025.</p>
-            <div className="flex gap-6">
-              <Link href="#" className="footer-link text-sm text-foreground/60 hover:text-primary transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="#" className="footer-link text-sm text-foreground/60 hover:text-primary transition-colors">
-                Terms of Service
-              </Link>
-            </div>
           </div>
         </div>
       </footer>
