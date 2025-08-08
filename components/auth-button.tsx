@@ -24,7 +24,6 @@ export function AuthButton({ provider, label, icon, onClick }: AuthButtonProps) 
   const supabase = createClientComponentClient()
 
   const handleLogin = async () => {
-    if (disabled) return
 
     try {
       setIsLoading(true)
