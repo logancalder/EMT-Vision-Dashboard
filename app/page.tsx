@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { ParallaxSection } from "@/components/parallax-section"
-import { ActivityIcon, ShieldCheckIcon, BrainCircuitIcon, HeartPulseIcon, ArrowRightIcon, MenuIcon, HeadphonesIcon, FileTextIcon, CloudIcon, EyeIcon, ClockIcon, UsersIcon } from "lucide-react"
+import { ActivityIcon, ShieldCheckIcon, ArrowRightIcon, MenuIcon, HeadphonesIcon, FileTextIcon, CloudIcon, EyeIcon, ClockIcon, UsersIcon } from "lucide-react"
 import "./landing.css"
 
 export default function LandingPage() {
@@ -170,6 +170,15 @@ export default function LandingPage() {
               <Button size="lg" className="rounded-full cta-button">
                 Learn More
               </Button>
+              <Link 
+                href="https://www.canva.com/design/DAGku4gXd54/d7V_XE7Fh6P9k4u8_0wLzg/view?utm_content=DAGku4gXd54&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hccde4b428f"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button size="lg" variant="outline" className="rounded-full cta-button">
+                  View the presentation!
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

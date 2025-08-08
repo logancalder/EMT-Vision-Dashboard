@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Users, AlertCircle, Clock, User, Users2, Baby, User2, UserCog } from "lucide-react"
-import { RecentPatientsList } from "@/components/recent-patients-list"
+import { AlertCircle, Clock, User,  Baby, User2, UserCog } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { formatMedicalCondition } from "@/utils/format"
