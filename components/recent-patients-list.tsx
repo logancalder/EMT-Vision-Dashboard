@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Clock, ChevronDown, ChevronUp } from "lucide-react"
+import { usePrivacy } from "@/components/privacy-provider"
 
 interface Patient {
   PatientID: string
@@ -35,6 +36,7 @@ function getAcuityBadgeVariant(acuity: string | undefined): "default" | "seconda
 
 export function RecentPatientsList({ patients, variant = "sidebar", showDate = true }: RecentPatientsListProps) {
   const pathname = usePathname()
+  const { privacyMode, formatPatientName } = usePrivacy()
   
   // Group patients by date and hour
   const groupPatientsByDateAndHour = (patients: Patient[]) => {
@@ -97,7 +99,7 @@ export function RecentPatientsList({ patients, variant = "sidebar", showDate = t
                   <Link href={`/dashboard/patient/${patient.PatientID}`}>
                     <div className="flex flex-col items-start text-left w-full">
                       <div className="flex items-center justify-between w-full">
-                        <span className="font-medium truncate">{patient.PatientName}</span>
+                        <span className="font-medium truncate">{formatPatientName(patient.PatientName, patient.PatientID)}</span>
                         {(patient.Severity) && (
                           <Badge
                             variant={getAcuityBadgeVariant(patient.Severity)}
@@ -108,7 +110,7 @@ export function RecentPatientsList({ patients, variant = "sidebar", showDate = t
                         )}
                       </div>
                       <div className="flex items-center text-xs text-muted-foreground mt-1">
-                        <span>{patient.Age} yrs</span>
+                        <span>{privacyMode ? "** yrs" : `${patient.Age} yrs`}</span>
                         {patient.Gender && (
                           <>
                             <span className="mx-1">•</span>

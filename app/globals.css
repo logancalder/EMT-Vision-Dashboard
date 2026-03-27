@@ -4,65 +4,65 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: #f8fafc; /* Slate 50 for clinical off-white */
+    --foreground: #0f172a; /* Slate 900 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: #ffffff;
+    --card-foreground: #0f172a;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: #ffffff;
+    --popover-foreground: #0f172a;
 
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
+    --primary: #475569; /* Slate 600 - muted medical blue/grey */
+    --primary-foreground: #f8fafc;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: #f1f5f9; /* Slate 100 */
+    --secondary-foreground: #1e293b;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: #f1f5f9; /* Slate 100 */
+    --muted-foreground: #64748b; /* Slate 500 */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: #e2e8f0; /* Slate 200 */
+    --accent-foreground: #0f172a;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: #ef4444; /* Red 500 */
+    --destructive-foreground: #f8fafc;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: #475569;
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 220 20% 10%;
-    --foreground: 210 40% 98%;
+    --background: #0b0f19; /* Very dark medical slate/grey */
+    --foreground: #f8fafc;
 
-    --card: 220 20% 13%;
-    --card-foreground: 210 40% 98%;
+    --card: #111827; /* Gray 900 for solid dark panels */
+    --card-foreground: #f8fafc;
 
-    --popover: 220 20% 10%;
-    --popover-foreground: 210 40% 98%;
+    --popover: #111827;
+    --popover-foreground: #f8fafc;
 
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: #64748b; /* Slate 500 for bright but muted dark mode primary */
+    --primary-foreground: #0b0f19;
 
-    --secondary: 220 20% 16%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: #1e293b; /* Slate 800 */
+    --secondary-foreground: #f8fafc;
 
-    --muted: 220 20% 16%;
-    --muted-foreground: 215 20.2% 75.1%;
+    --muted: #1e293b; /* Slate 800 */
+    --muted-foreground: #94a3b8; /* Slate 400 */
 
-    --accent: 220 20% 16%;
-    --accent-foreground: 210 40% 98%;
+    --accent: #334155; /* Slate 700 */
+    --accent-foreground: #f8fafc;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: #991b1b;
+    --destructive-foreground: #f8fafc;
 
-    --border: 220 20% 16%;
-    --input: 220 20% 16%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: #1e293b;
+    --input: #1e293b;
+    --ring: #64748b;
   }
 }
 
@@ -71,16 +71,15 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground tabular-nums;
   }
 }
 
 .dark body {
-  background-color: hsl(220 20% 10%);
-  color: hsl(210 40% 98%);
+  background-color: #0b0f19;
+  color: #f8fafc;
 }
 
 .dark svg {
-  color: hsl(210 40% 98%);
+  color: #f8fafc;
 }
-

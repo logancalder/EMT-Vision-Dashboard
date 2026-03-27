@@ -2,25 +2,14 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useRouter } from 'next/navigation'
-import { AuthButton } from "@/components/auth-button";
-import { FaGoogle } from "react-icons/fa";
+import { signIn } from "next-auth/react"
+import { AuthButton } from "@/components/auth-button"
+import { FaGoogle } from "react-icons/fa"
 
 export default function LoginPage() {
-  const router = useRouter()
-  const supabase = createClientComponentClient()
-
   const handleGoogleLogin = async () => {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`
-        }
-      })
-      
-      if (error) throw error
+      await signIn('google', { redirectTo: '/dashboard' })
     } catch (error) {
       console.error('Error logging in with Google:', error)
     }

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import db from "@/lib/db"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -9,15 +9,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Patient ID is required' }, { status: 400 })
   }
 
-  const { data, error } = await supabase
-    .from("Medications")
-    .select("*")
-    .eq('PatientID', patientId)
-    .order('Timestamp', { ascending: false })
-
-  if (error) {
+  try {
+    const data = db.prepare('SELECT * FROM Medications WHERE PatientID = ? ORDER BY Timestamp DESC').all(patientId)
+    return NextResponse.json(data)
+  } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
-
-  return NextResponse.json(data)
 } 

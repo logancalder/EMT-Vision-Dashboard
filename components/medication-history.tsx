@@ -69,17 +69,17 @@ export function MedicationHistory({ patientId }: MedicationHistoryProps) {
 
   if (medications.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center">
-            <Pill className="mr-2 h-5 w-5 text-primary" />
+      <Card className="shadow-sm rounded-sm border-t-4 border-t-primary">
+        <CardHeader className="p-2 bg-muted/40 border-b">
+          <CardTitle className="text-sm font-bold flex items-center uppercase tracking-wider">
+            <Pill className="mr-2 h-4 w-4 text-primary" />
             Medication History
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="text-center py-6 text-muted-foreground">
-            <Pill className="h-10 w-10 mx-auto mb-2 opacity-30" />
-            <p>No medications have been administered</p>
+        <CardContent className="p-0">
+          <div className="text-center py-6 text-muted-foreground bg-muted/5 font-mono text-xs">
+            <Pill className="h-6 w-6 mx-auto mb-2 opacity-30" />
+            <p className="uppercase tracking-widest font-sans font-bold text-[10px]">No medications have been administered</p>
           </div>
         </CardContent>
       </Card>
@@ -87,28 +87,28 @@ export function MedicationHistory({ patientId }: MedicationHistoryProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg flex items-center">
-          <Pill className="mr-2 h-5 w-5 text-primary" />
+    <Card className="shadow-sm rounded-sm border-t-4 border-t-primary">
+      <CardHeader className="p-2 bg-muted/40 border-b">
+        <CardTitle className="text-sm font-bold flex items-center uppercase tracking-wider">
+          <Pill className="mr-2 h-4 w-4 text-primary" />
           Medication History
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
+      <CardContent className="p-0">
+        <Table className="font-mono text-xs">
+          <TableHeader className="bg-muted/20">
             <TableRow>
-              <TableHead>Medication</TableHead>
-              <TableHead>Quantity (mg)</TableHead>
-              <TableHead>Time Administered</TableHead>
+              <TableHead className="font-sans text-[10px] uppercase text-muted-foreground font-bold">Medication</TableHead>
+              <TableHead className="font-sans text-[10px] uppercase text-muted-foreground font-bold">Quantity (mg)</TableHead>
+              <TableHead className="font-sans text-[10px] uppercase text-muted-foreground font-bold">Time Administered</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {medications.map((med) => (
-              <TableRow key={med.MedicationID}>
-                <TableCell className="font-medium">{med.MedicationName}</TableCell>
-                <TableCell>{med.QuantityAdministered}</TableCell>
-                <TableCell>{new Date(med.Timestamp).toLocaleString()}</TableCell>
+              <TableRow key={med.MedicationID} className="hover:bg-muted/30">
+                <TableCell className="font-bold text-foreground">{med.MedicationName}</TableCell>
+                <TableCell className="font-bold text-foreground">{med.QuantityAdministered}</TableCell>
+                <TableCell className="text-muted-foreground">{new Date(med.Timestamp).toLocaleString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>

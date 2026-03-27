@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import { Activity, Calendar, Clock, Home, LogOut, Settings, User, Users, ChevronDown, ChevronUp } from "lucide-react"
+import { Activity, Calendar, Clock, Home, LogOut, Settings, User, Users, ChevronDown, ChevronUp, Eye, EyeOff } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { signOut } from "next-auth/react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { usePrivacy } from "@/components/privacy-provider"
 
 interface Patient {
   PatientID: string
@@ -66,6 +67,7 @@ function formatList(list: string | null | undefined): string {
 
 export function SidebarNav() {
   const pathname = usePathname()
+  const { privacyMode, togglePrivacyMode, formatPatientName } = usePrivacy()
   const [patients, setPatients] = useState<Patient[]>([])
   const [openDates, setOpenDates] = useState<string[]>([])
   const [userProfile, setUserProfile] = useState<any>(null)
@@ -98,14 +100,18 @@ export function SidebarNav() {
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const supabase = createClientComponentClient()
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session?.user) {
-        setUserProfile({
-          name: session.user.user_metadata.full_name,
-          organization: session.user.user_metadata.email,
-          avatar: session.user.user_metadata.avatar_url
-        })
+      try {
+        const response = await fetch('/api/auth/session')
+        const session = await response.json()
+        if (session?.user) {
+          setUserProfile({
+            name: session.user.name,
+            organization: session.user.email,
+            avatar: session.user.image
+          })
+        }
+      } catch (error) {
+        console.error("Error fetching session:", error)
       }
     }
 
@@ -162,8 +168,8 @@ export function SidebarNav() {
   return (
     <div className="w-64 bg-card border-r h-screen flex flex-col">
       {/* Logo and Header */}
-      <div className="p-4 flex flex-col items-center">
-        <Link href="/" className="flex items-center justify-center mb-2">
+      <div className="px-4 py-4 flex flex-col">
+        <Link href="/" className="flex items-center justify-start mb-2 px-2">
         <div className="relative w-10 h-10 mr-2">
       {/* Balance Scale SVG */}
       <svg viewBox="0 0 128 128" className="text-primary w-full h-full">
@@ -220,9 +226,9 @@ export function SidebarNav() {
       </div>
 
       {/* Navigation */}
-      <div className="px-3 py-2">
+      <div className="px-4 py-2">
         <div className="space-y-1">
-          <Button variant={pathname === "/dashboard" ? "secondary" : "ghost"} className="w-full justify-start" asChild>
+          <Button variant={pathname === "/dashboard" ? "secondary" : "ghost"} className="w-full justify-start px-2" asChild>
             <Link href="/dashboard">
               <Home className="mr-2 h-4 w-4" />
               Dashboard
@@ -244,8 +250,8 @@ export function SidebarNav() {
       <Separator className="my-2" />
 
       {/* Patients List */}
-      <div className="px-3 py-2">
-        <div className="flex items-center justify-between mb-2">
+      <div className="px-4 py-2">
+        <div className="flex items-center justify-between mb-2 px-2">
           <h3 className="text-sm font-semibold">Total Patients</h3>
           <Badge variant="outline" className="text-xs">
             {patients.length}
@@ -254,17 +260,17 @@ export function SidebarNav() {
       </div>
 
       <ScrollArea className="flex-1">
-        <div className="px-3 space-y-1">
+        <div className="px-4 space-y-1">
           {/* Today's patients section */}
           {Object.entries(groupPatientsByDateAndHour(patients))
             .filter(([date]) => date === today)
             .map(([date, hours]) => (
               <div key={date} className="mb-2">
-                <div className="font-bold text-sm text-primary mb-1">Today</div>
+                <div className="font-bold text-sm text-primary mb-1 px-2">Today</div>
                 <div>
                   {Object.entries(hours).map(([hour, hourPatients]) => (
                     <div key={hour} className="mb-2">
-                      <div className="flex items-center text-xs text-muted-foreground mb-1">
+                      <div className="flex items-center text-xs text-muted-foreground mb-1 px-2">
                         <Clock className="h-3 w-3 mr-1" />
                         <span>{hour}</span>
                       </div>
@@ -273,23 +279,23 @@ export function SidebarNav() {
                           key={patient.PatientID}
                           asChild
                           variant={pathname === `/dashboard/patient/${patient.PatientID}` ? "secondary" : "ghost"}
-                          className="w-full justify-start h-auto py-2 px-3 mb-1"
+                          className="w-full justify-start h-auto py-2 px-2 mb-1"
                           size="sm"
                         >
                           <Link href={`/dashboard/patient/${patient.PatientID}`}>
                             <div className="flex flex-col items-start text-left w-full">
                               <div className="flex items-center justify-between w-full">
-                                <span className="font-medium truncate">{patient.PatientName}</span>
+                                <span className="font-mono font-medium truncate tracking-tight text-sm">{formatPatientName(patient.PatientName, patient.PatientID)}</span>
                                 {(patient.InitialAcuity || patient.Severity) && (
                                   <Badge
                                     variant={getAcuityBadgeVariant(patient.Severity || patient.InitialAcuity)}
-                                    className="ml-1 text-[10px] h-5"
+                                    className="ml-1 text-[10px] h-5 font-mono uppercase tracking-tighter"
                                   >
                                     {patient.Severity || patient.InitialAcuity}
                                   </Badge>
                                 )}
                               </div>
-                              <div className="flex items-center text-xs text-muted-foreground mt-1">
+                              <div className="flex items-center text-xs text-muted-foreground mt-1 font-mono tracking-tight">
                                 <span>{patient.Age} yrs</span>
                                 {patient.Gender && (
                                   <>
@@ -313,7 +319,7 @@ export function SidebarNav() {
             .filter(([date]) => date !== today)
             .map(([date, hours]) => (
               <div key={date} className="mb-2">
-                <div className="flex items-center justify-between mb-1 cursor-pointer" onClick={() => toggleDate(date)}>
+                <div className="flex items-center justify-between mb-1 px-2 cursor-pointer" onClick={() => toggleDate(date)}>
                   <span className="font-bold text-sm text-muted-foreground">{date}</span>
                   {openDates.includes(date) ? (
                     <ChevronUp className="h-4 w-4 text-muted-foreground" />
@@ -325,7 +331,7 @@ export function SidebarNav() {
                   <div>
                     {Object.entries(hours).map(([hour, hourPatients]) => (
                       <div key={hour} className="mb-2">
-                        <div className="flex items-center text-xs text-muted-foreground mb-1">
+                        <div className="flex items-center text-xs text-muted-foreground mb-1 px-2">
                           <Clock className="h-3 w-3 mr-1" />
                           <span>{hour}</span>
                         </div>
@@ -334,23 +340,23 @@ export function SidebarNav() {
                             key={patient.PatientID}
                             asChild
                             variant={pathname === `/dashboard/patient/${patient.PatientID}` ? "secondary" : "ghost"}
-                            className="w-full justify-start h-auto py-2 px-3 mb-1"
+                            className="w-full justify-start h-auto py-2 px-2 mb-1"
                             size="sm"
                           >
                             <Link href={`/dashboard/patient/${patient.PatientID}`}>
                               <div className="flex flex-col items-start text-left w-full">
                                 <div className="flex items-center justify-between w-full">
-                                  <span className="font-medium truncate">{patient.PatientName}</span>
+                                  <span className="font-mono font-medium truncate tracking-tight text-sm">{formatPatientName(patient.PatientName, patient.PatientID)}</span>
                                   {(patient.InitialAcuity || patient.Severity) && (
                                     <Badge
                                       variant={getAcuityBadgeVariant(patient.Severity || patient.InitialAcuity)}
-                                      className="ml-1 text-[10px] h-5"
+                                      className="ml-1 text-[10px] h-5 font-mono uppercase tracking-tighter"
                                     >
                                       {patient.Severity || patient.InitialAcuity}
                                     </Badge>
                                   )}
                                 </div>
-                                <div className="flex items-center text-xs text-muted-foreground mt-1">
+                                <div className="flex items-center text-xs text-muted-foreground mt-1 font-mono tracking-tight">
                                   <span>{patient.Age} yrs</span>
                                   {patient.Gender && (
                                     <>
@@ -373,36 +379,40 @@ export function SidebarNav() {
       </ScrollArea>
 
       {/* User Profile */}
-      <div className="border-t p-3">
+      <div className="border-t p-3 shrink-0">
         <div className="flex items-center space-x-3">
           <Avatar className="h-9 w-9">
             <AvatarImage 
               src={userProfile?.avatar} 
-              alt={userProfile?.name || 'User'} 
+              alt={userProfile?.name || 'User'}
+              referrerPolicy="no-referrer"
             />
             <AvatarFallback>
               {userProfile?.name ? userProfile.name.charAt(0).toUpperCase() : 'U'}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="font-medium text-sm truncate">{userProfile?.name || 'Loading...'}</p>
-            <p className="text-xs text-muted-foreground">{userProfile?.organization || 'Loading...'}</p>
+            <p className="font-medium text-sm truncate">{privacyMode ? formatPatientName(userProfile?.name) : (userProfile?.name || 'Loading...')}</p>
+            <p className="text-xs text-muted-foreground truncate">{privacyMode ? '***@***.com' : (userProfile?.organization || 'Loading...')}</p>
           </div>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <Settings className="h-4 w-4" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="h-8 w-8 text-destructive"
-            onClick={async () => {
-              const supabase = createClientComponentClient()
-              await supabase.auth.signOut()
-              window.location.href = '/login'
-            }}
-          >
-            <LogOut className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center shrink-0">
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={togglePrivacyMode} title={privacyMode ? "Disable Privacy Mode" : "Enable Privacy Mode"}>
+              {privacyMode ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </Button>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Settings className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-8 w-8 text-destructive"
+              onClick={async () => {
+                await signOut({ callbackUrl: '/login' })
+              }}
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>
