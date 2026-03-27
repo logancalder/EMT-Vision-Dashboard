@@ -21,6 +21,9 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
     serverComponentsExternalPackages: ['better-sqlite3'],
+    outputFileTracingIncludes: {
+      '/api/**/*': ['./local.db'],
+    },
   },
 }
 

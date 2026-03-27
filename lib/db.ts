@@ -1,10 +1,35 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 
 // Connect to or create local.db in the project root
-const dbPath = path.resolve(process.cwd(), 'local.db');
+let dbPath = path.resolve(process.cwd(), 'local.db');
+
+// In production (Vercel), the filesystem is read-only. 
+// We must copy the DB to /tmp to make it writable and avoid PRAGMA errors.
+if (process.env.NODE_ENV === 'production') {
+  const tmpPath = '/tmp/local.db';
+  try {
+    if (!fs.existsSync(tmpPath)) {
+      if (fs.existsSync(dbPath)) {
+        fs.copyFileSync(dbPath, tmpPath);
+        console.log("Successfully copied local.db to /tmp");
+      } else {
+        console.warn(`Could not find local.db at ${dbPath}`);
+      }
+    }
+    dbPath = tmpPath;
+  } catch (err) {
+    console.error('Failed to copy DB to /tmp', err);
+  }
+}
+
 const db = new Database(dbPath);
-db.pragma('journal_mode = WAL');
+try {
+  db.pragma('journal_mode = WAL');
+} catch (e) {
+  console.warn('Could not set WAL mode (might be on read-only fs)', e);
+}
 
 // Ensure tables exist
 db.exec(`

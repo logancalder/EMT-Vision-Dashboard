@@ -57,7 +57,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="h-[calc(100vh-theme(spacing.12))] flex flex-col gap-4 p-4">
+    <div className="h-[calc(100vh-theme(spacing.12))] flex flex-col gap-4">
       {/* Top Dense KPI Bar */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 shrink-0">
         <Card className="rounded-sm border-l-4 border-l-blue-500 shadow-sm bg-card/50">
