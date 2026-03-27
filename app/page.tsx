@@ -142,20 +142,24 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section with Parallax */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-background z-0"></div>
+      <section className="relative min-h-screen pt-20 flex items-center justify-center overflow-hidden">
+        {/* Dynamic Glow Gradients */}
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background z-0"></div>
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/20 blur-[120px] rounded-full mix-blend-screen pointer-events-none z-0"></div>
+        <div className="absolute top-[20%] right-[-10%] w-[40%] h-[60%] bg-blue-500/10 blur-[120px] rounded-full mix-blend-screen pointer-events-none z-0"></div>
+        
         <div
-          className="absolute inset-0 z-0 opacity-10"
+          className="absolute inset-0 z-0 opacity-[0.03]"
           style={{
-            backgroundImage: "radial-gradient(circle at 25% 25%, var(--primary) 1px, transparent 1px)",
-            backgroundSize: "50px 50px",
+            backgroundImage: "radial-gradient(circle at 25% 25%, var(--primary) 2px, transparent 2px)",
+            backgroundSize: "60px 60px",
           }}
         ></div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 mt-12 flex flex-col items-center">
           <div className="hero-content max-w-4xl mx-auto text-center space-y-8">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-              <span className="text-primary">Hands-Free</span> ePCR Documentation
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-sm">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-blue-400">Hands-Free</span> ePCR Documentation
             </h1>
             <div className="flex justify-center mt-4">
               <span className="inline-block rounded-full bg-yellow-200 text-yellow-800 px-4 py-1 text-sm font-semibold shadow-sm border border-yellow-300 flex items-center gap-2">
@@ -181,6 +185,21 @@ export default function LandingPage() {
               </Link>
             </div>
           </div>
+          
+          <div className="mt-32 w-full max-w-4xl mx-auto relative aspect-video flex items-center justify-center animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="absolute inset-0 border border-primary/20 rounded-xl overflow-hidden shadow-[0_0_40px_-10px_rgba(71,91,99,0.3)] z-0 bg-black/40">
+              <video 
+                src="/emtvisiondemo.mp4" 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* Ambient bottom fade to blend with next section */}
+            <div className="absolute inset-x-0 bottom-[-2px] h-1/4 bg-gradient-to-t from-background to-transparent z-10"></div>
+          </div>
         </div>
 
         {/* Floating heartbeat animation */}
@@ -192,8 +211,9 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <ParallaxSection className="py-24 md:py-32 bg-secondary/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ParallaxSection className="py-24 md:py-32 mt-32 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background z-0"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4">
@@ -299,8 +319,9 @@ export default function LandingPage() {
       </section>
 
       {/* Benefits Section */}
-      <ParallaxSection className="py-24 md:py-32 bg-secondary/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ParallaxSection className="py-24 md:py-32 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-blue-500/5 to-background z-0"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl mb-4">
