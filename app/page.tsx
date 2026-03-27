@@ -179,7 +179,7 @@ export default function LandingPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button size="lg" variant="outline" className="rounded-full cta-button">
+                <Button size="lg" className="rounded-full cta-button">
                   View the presentation!
                 </Button>
               </Link>
